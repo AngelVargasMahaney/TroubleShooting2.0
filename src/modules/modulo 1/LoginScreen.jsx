@@ -1,13 +1,14 @@
 import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView, Image, StatusBar } from 'react-native';
 import React, { useState } from 'react';
-import { Box, Button, FormControl, Icon, Input, Stack,  } from 'native-base';
+import { Box, Button, FormControl, Icon, Input, Stack, } from 'native-base';
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import { postLogin } from '../services/loginService';
 import { useAuth } from '../context/authState';
 import Asyncstorage from "@react-native-async-storage/async-storage"
 import { useNavigation } from '@react-navigation/native';
+import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
 
-
+import { Ionicons } from '@expo/vector-icons';
 const image = require('../../../assets/backgrounds/Pantalla_login.png')
 const logo_blanco = require('../../../assets/logos/Logo_blanco.png')
 
@@ -33,7 +34,7 @@ const LoginScreen = () => {
             setToken(response.data.token)
             Asyncstorage.setItem('token', response.data.token).then((response) => {
 
-                showAlert()
+                handleOpen()
 
             })
         }, err => {
@@ -134,7 +135,21 @@ const LoginScreen = () => {
                     hideAlert();
                 }}
             /> */}
-           
+          
+            <SCLAlert
+                show={show}
+                onRequestClose={handleClose}
+                theme="info"
+                title="Login"
+                subtitle="Ingreso exitoso"
+                headerIconComponent={<Ionicons name="ios-thumbs-up" size={32} color="white" />}
+            >
+                <SCLAlertButton theme="info" onPress={() => {
+                    console.log('Ingresé')
+                    navigation.navigate('Home')
+                    hideAlert();
+                }}>Continuar</SCLAlertButton>
+            </SCLAlert>
 
         </ScrollView>
 
