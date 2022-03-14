@@ -6,10 +6,7 @@ import { postLogin } from '../services/loginService';
 import { useAuth } from '../context/authState';
 import Asyncstorage from "@react-native-async-storage/async-storage"
 import { useNavigation } from '@react-navigation/native';
-import {
-    SCLAlert,
-    SCLAlertButton
-} from 'react-native-scl-alert'
+
 
 const image = require('../../../assets/backgrounds/Pantalla_login.png')
 const logo_blanco = require('../../../assets/logos/Logo_blanco.png')
@@ -137,18 +134,7 @@ const LoginScreen = () => {
                     hideAlert();
                 }}
             /> */}
-            <Button title="Show" onPress={handleOpen} />
-            <SCLAlert
-                show={show}
-                onRequestClose={handleClose}
-                theme="info"
-                title="Info"
-                subtitle="You can setup the colors using the theme prop"
-                headerIconComponent={<Ionicons name="ios-thumbs-up" size={32} color="white" />}
-            >
-                <SCLAlertButton theme="info" onPress={handleClose}>Done</SCLAlertButton>
-                <SCLAlertButton theme="default" onPress={handleClose}>Cancel</SCLAlertButton>
-            </SCLAlert>
+           
 
         </ScrollView>
 
