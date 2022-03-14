@@ -5,13 +5,35 @@ import { StyleSheet, Text, View } from 'react-native';
 import { AuthProvider } from './src/modules/context/authState';
 import LoginScreen from './src/modules/modulo 1/LoginScreen';
 import TemplateScreen from './src/Template/TemplateScreen';
+const Stack = createNativeStackNavigator();
+function MyStack() {
+  return (
+
+    <Stack.Navigator screenOptions={{
+      headerShown: false,
+    }
+    }>
+      <Stack.Screen name="Login"
+        component={LoginScreen}
+      />
+      <Stack.Screen name="Home"
+        component={TemplateScreen} />
+
+
+
+
+    </Stack.Navigator>
+    //Psuehando
+  )
+}
+
 
 export default function App() {
   return (
     <AuthProvider>
       <NativeBaseProvider>
         <NavigationContainer>
-          <TemplateScreen />
+          <MyStack />
         </NavigationContainer>
       </NativeBaseProvider>
     </AuthProvider>

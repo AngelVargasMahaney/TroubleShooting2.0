@@ -136,7 +136,7 @@ const LoginScreen = () => {
                 }}
             /> */}
           
-            {/* <SCLAlert
+            <SCLAlert
                 show={show}
                 onRequestClose={handleClose}
                 theme="info"
@@ -149,7 +149,7 @@ const LoginScreen = () => {
                     navigation.navigate('Home')
                     hideAlert();
                 }}>Continuar</SCLAlertButton>
-            </SCLAlert> */}
+            </SCLAlert>
 
         </ScrollView>
 

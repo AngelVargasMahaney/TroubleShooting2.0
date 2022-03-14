@@ -28,11 +28,11 @@ const TemplateScreen = () => {
 
                     <Menu shadow={2} w="190" trigger={triggerProps => {
                         return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
-                            {/* <Icon as={Ionicons} style={styles.icon} name="ellipsis-vertical" /> */}
-                            <HamburgerIcon />
+                            <Icon as={Ionicons} style={styles.icon} name="ellipsis-vertical" />
+                            {/* <HamburgerIcon /> */}
                         </Pressable>;
                     }}>
-                        <Menu.Item>Arial</Menu.Item>
+                        <Menu.Item>Cerrar Sesión</Menu.Item>
 
                     </Menu>
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     Title: {
         color: "rgba(1,40,107,1)",
         // fontFamily: "roboto-700",
-        fontSize: 20,
+        fontSize: 18,
         marginLeft: 20,
         marginTop: 40
     },
