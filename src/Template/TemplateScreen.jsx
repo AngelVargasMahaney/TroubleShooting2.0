@@ -1,21 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
-import { PixelRatio } from 'react-native';
-import { Icon, Image } from 'native-base';
+import { Icon, Image, Menu, Pressable, HamburgerIcon, Box } from 'native-base';
 
 const TemplateScreen = () => {
-
-
-    const [menuVisible, setMenuVisible] = React.useState(false);
-    const toggleMenu = () => {
-        setMenuVisible(!menuVisible);
-    };
-
-    // const renderMenuAction = () => (
-    //     <TopNavigationAction style={{ marginTop: 41 }} icon={MenuIcon} onPress={toggleMenu} />
-    // );
-
 
     const [Estado, setEstado] = useState(false);
     const showAlert = () => {
@@ -32,15 +20,33 @@ const TemplateScreen = () => {
                 </View>
                 <View style={styles.containerLogo}>
                     <Image style={styles.logo}
-                        source={require('../../assets/logos/Logo_Antapaccay.png')} alt="Alternate Text" size="sm" resizeMode="cover" />
-                    <Icon as={Ionicons} style={styles.icon} name="ellipsis-vertical" />
+                        source={require('../../assets/logos/Logo_Antapaccay.png')}
+                        alt="Alternate Text"
+                        size="sm"
+                        resizeMode="cover"
+                    />
+
+                    <Menu shadow={2} w="190" trigger={triggerProps => {
+                        return <Pressable accessibilityLabel="More options menu" {...triggerProps}>
+                            {/* <Icon as={Ionicons} style={styles.icon} name="ellipsis-vertical" /> */}
+                            <HamburgerIcon />
+                        </Pressable>;
+                    }}>
+                        <Menu.Item>Arial</Menu.Item>
+
+                    </Menu>
+
                 </View>
-            </View>
-            <View style={styles.containerFooter}>
-                <Image
-                    source={require('../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="xl"  />
 
             </View>
+
+
+            <View style={styles.containerFooter}>
+                <Image
+                    source={require('../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="xl" />
+
+            </View>
+
         </>
 
 
@@ -65,6 +71,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginTop: 40,
+        fontSize: 20, color: 'rgba(1,40,107,1)'
     },
     logo: {
         marginTop: 40,

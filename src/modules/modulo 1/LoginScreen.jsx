@@ -6,7 +6,7 @@ import { postLogin } from '../services/loginService';
 import { useAuth } from '../context/authState';
 import Asyncstorage from "@react-native-async-storage/async-storage"
 import { useNavigation } from '@react-navigation/native';
-import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
+//import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
 
 import { Ionicons } from '@expo/vector-icons';
 const image = require('../../../assets/backgrounds/Pantalla_login.png')
@@ -136,7 +136,7 @@ const LoginScreen = () => {
                 }}
             /> */}
           
-            <SCLAlert
+            {/* <SCLAlert
                 show={show}
                 onRequestClose={handleClose}
                 theme="info"
@@ -149,7 +149,7 @@ const LoginScreen = () => {
                     navigation.navigate('Home')
                     hideAlert();
                 }}>Continuar</SCLAlertButton>
-            </SCLAlert>
+            </SCLAlert> */}
 
         </ScrollView>
 
