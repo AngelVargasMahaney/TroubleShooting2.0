@@ -56,25 +56,23 @@ const TemplateScreen = () => {
 export default TemplateScreen
 const styles = StyleSheet.create({
     container: {
-        marginTop: 20,
         flexDirection: 'row',
         justifyContent: 'space-between'
     },
     containerLogo: {
         flexDirection: 'row',
         justifyContent: 'flex-start',
-        marginTop: 20
     },
     titleContainer: {
-        marginTop: 20,
         alignItems: 'center',
     },
     icon: {
-        marginTop: 40,
-        fontSize: 20, color: 'rgba(1,40,107,1)'
+        marginTop: 30,
+        fontSize: 20, 
+        color: 'rgba(1,40,107,1)'
     },
     logo: {
-        marginTop: 40,
+        marginTop: 20,
         width: 89,
         height: 50,
     },
@@ -83,7 +81,7 @@ const styles = StyleSheet.create({
         // fontFamily: "roboto-700",
         fontSize: 18,
         marginLeft: 20,
-        marginTop: 40
+        marginTop: 30
     },
     containerFooter: {
 
