@@ -1,6 +1,6 @@
 {
-  "name": "troubleshooting",
-  "version": "1.0.0",
+  "name": "Troubleshooting",
+  "version": "2.0.0",
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
@@ -10,6 +10,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@expo/vector-icons": "^12.0.5",
     "@react-native-async-storage/async-storage": "^1.16.1",
     "@react-navigation/native": "^6.0.8",
     "axios": "^0.26.1",

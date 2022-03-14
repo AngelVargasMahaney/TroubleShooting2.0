@@ -4,13 +4,14 @@ import { NativeBaseProvider } from 'native-base';
 import { StyleSheet, Text, View } from 'react-native';
 import { AuthProvider } from './src/modules/context/authState';
 import LoginScreen from './src/modules/modulo 1/LoginScreen';
+import TemplateScreen from './src/Template/TemplateScreen';
 
 export default function App() {
   return (
     <AuthProvider>
       <NativeBaseProvider>
         <NavigationContainer>
-          <LoginScreen />
+          <TemplateScreen />
         </NavigationContainer>
       </NativeBaseProvider>
     </AuthProvider>
