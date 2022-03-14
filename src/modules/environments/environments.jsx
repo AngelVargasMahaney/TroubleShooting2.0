@@ -1,0 +1,1 @@
+export const URL_BACKEND = 'https://services-mlpantapaccay.manualinteractivo.com/api'

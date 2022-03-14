@@ -1,16 +1,18 @@
-import { StyleSheet, Text, View, useWindowDimensions, ImageBackground, Dimensions, ScrollView, Image, KeyboardAvoidingView, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView, Image, StatusBar } from 'react-native';
 import React, { useState } from 'react';
-import { Box, Button, FormControl, Icon, Input, NativeBaseProvider, Stack, WarningOutlineIcon } from 'native-base';
+import { Box, Button, FormControl, Icon, Input, Stack,  } from 'native-base';
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import { postLogin } from '../services/loginService';
 import { useAuth } from '../context/authState';
 import Asyncstorage from "@react-native-async-storage/async-storage"
-import AwesomeAlert from 'react-native-awesome-alerts';
 import { useNavigation } from '@react-navigation/native';
+import {
+    SCLAlert,
+    SCLAlertButton
+} from 'react-native-scl-alert'
 
-
-const image = require('../../assets/backgrounds/Pantalla_login.png')
-const logo_blanco = require('../../assets/logos/Logo_blanco.png')
+const image = require('../../../assets/backgrounds/Pantalla_login.png')
+const logo_blanco = require('../../../assets/logos/Logo_blanco.png')
 
 const LoginScreen = () => {
 
@@ -47,7 +49,15 @@ const LoginScreen = () => {
     //loader
     const [visible, setVisible] = useState(false);
 
+    const [show, setShow] = useState(false)
 
+    const handleOpen = () => {
+        setShow(true)
+    }
+
+    const handleClose = () => {
+        setShow(false)
+    }
 
     return (
 
@@ -104,7 +114,7 @@ const LoginScreen = () => {
                     </Text>
                 </View>
             </View>
-            <AwesomeAlert
+            {/* <AwesomeAlert
                 show={Estado}
                 showProgress={false}
                 title="Bienvenido"
@@ -126,8 +136,20 @@ const LoginScreen = () => {
                     navigation.navigate('Home')
                     hideAlert();
                 }}
-            />
-           
+            /> */}
+            <Button title="Show" onPress={handleOpen} />
+            <SCLAlert
+                show={show}
+                onRequestClose={handleClose}
+                theme="info"
+                title="Info"
+                subtitle="You can setup the colors using the theme prop"
+                headerIconComponent={<Ionicons name="ios-thumbs-up" size={32} color="white" />}
+            >
+                <SCLAlertButton theme="info" onPress={handleClose}>Done</SCLAlertButton>
+                <SCLAlertButton theme="default" onPress={handleClose}>Cancel</SCLAlertButton>
+            </SCLAlert>
+
         </ScrollView>
 
 
