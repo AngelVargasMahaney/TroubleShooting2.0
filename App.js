@@ -3,6 +3,8 @@ import { StatusBar } from 'expo-status-bar';
 import { NativeBaseProvider } from 'native-base';
 import { StyleSheet, Text, View } from 'react-native';
 import { AuthProvider } from './src/modules/context/authState';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
 import LoginScreen from './src/modules/modulo 1/LoginScreen';
 import TemplateScreen from './src/Template/TemplateScreen';
 const Stack = createNativeStackNavigator();

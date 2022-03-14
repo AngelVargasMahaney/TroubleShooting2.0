@@ -9,6 +9,7 @@ import { useNavigation } from '@react-navigation/native';
 //import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
 
 import { Ionicons } from '@expo/vector-icons';
+import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
 const image = require('../../../assets/backgrounds/Pantalla_login.png')
 const logo_blanco = require('../../../assets/logos/Logo_blanco.png')
 
@@ -67,10 +68,10 @@ const LoginScreen = () => {
 
                 <View style={styles.portadaView}>
                     <Text style={styles.portadaViewText}>
-                        RUT-OP
+                        TROUBLESHOOTING
                     </Text>
                     <Text style={styles.portadaViewTextSmall}>
-                        Registro de Rutinas Operacionales
+                        Registro de Solución de Problemas
                     </Text>
                     <Image source={logo_blanco} style={styles.logo_blanco} />
                 </View>
@@ -138,7 +139,7 @@ const LoginScreen = () => {
           
             <SCLAlert
                 show={show}
-                onRequestClose={handleClose}
+                onRequestClose={()=>{handleClose()}}
                 theme="info"
                 title="Login"
                 subtitle="Ingreso exitoso"
@@ -146,8 +147,9 @@ const LoginScreen = () => {
             >
                 <SCLAlertButton theme="info" onPress={() => {
                     console.log('Ingresé')
+                    setShow(false);
                     navigation.navigate('Home')
-                    hideAlert();
+                   
                 }}>Continuar</SCLAlertButton>
             </SCLAlert>
 
@@ -202,7 +204,7 @@ const styles = StyleSheet.create({
     },
     portadaViewText: {
         color: 'white',
-        fontSize: 64,
+        fontSize: 30,
         textAlign: 'center',
     },
     portadaViewTextSmall: {
