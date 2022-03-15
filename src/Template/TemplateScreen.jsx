@@ -12,6 +12,16 @@ const TemplateScreen = () => {
     const hideAlert = () => {
         setEstado(false);
     };
+    const cerrarSesion = async () => {
+        try {
+            await AsyncStorage.removeItem('token')
+            navigation.navigate('Login')
+        } catch (e) {
+            // console.log(e)
+        }
+
+        // console.log('Done.')
+    }
     return (
         <>
             <View style={styles.container}>
@@ -32,7 +42,7 @@ const TemplateScreen = () => {
                             {/* <HamburgerIcon /> */}
                         </Pressable>;
                     }}>
-                        <Menu.Item>Cerrar Sesión</Menu.Item>
+                        <Menu.Item onPress={() => cerrarSesion()}>Cerrar Sesión</Menu.Item>
 
                     </Menu>
 
@@ -57,7 +67,8 @@ export default TemplateScreen
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        marginTop:20
     },
     containerLogo: {
         flexDirection: 'row',
