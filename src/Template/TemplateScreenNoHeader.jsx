@@ -12,7 +12,7 @@ const TemplateScreenNoHeader = (props) => {
             fadeAnim,
             {
                 toValue: 1,
-                duration: 2500,
+                duration: 1250,
             }
         ).start();
     }, [fadeAnim])
