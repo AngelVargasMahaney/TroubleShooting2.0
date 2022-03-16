@@ -45,7 +45,7 @@ const Screen1 = () => {
 
                     </View>
                 </Box>
-                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginTop: 50, marginRight:10 }}>
+                <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginTop: 50, marginRight: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
                         <Text style={{ textAlign: 'center', fontSize: 14, justifyContent: 'center', alignItems: 'center', marginRight: 7 }}>
                             ¿Necesitas ayuda?
@@ -55,8 +55,9 @@ const Screen1 = () => {
                         </Pressable>
                     </View>
                 </View>
-            </View>
 
+            </View>
+           
         </>
 
     )
@@ -82,5 +83,12 @@ const styles = StyleSheet.create({
         shadowRadius: 3.84,
 
         elevation: 5,
+    },
+    containerFooter: {
+
+        flex: 1,
+        zIndex: -1,
+        flexDirection: "column-reverse",
+        alignItems: "flex-start",
     }
 })
