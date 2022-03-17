@@ -13,6 +13,7 @@ const TemplateScreenNoHeader = (props) => {
             {
                 toValue: 1,
                 duration: 1250,
+                useNativeDriver: true
             }
         ).start();
     }, [fadeAnim])

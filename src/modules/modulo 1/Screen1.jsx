@@ -1,21 +1,25 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React,{ useState} from 'react'
 import TemplateScreen from '../../Template/TemplateScreen'
 import { Box, Divider, HStack, Image, InfoIcon, Pressable, VStack } from 'native-base'
 import { useNavigation } from '@react-navigation/native'
+import TemplateScreenNoHeader from '../../Template/TemplateScreenNoHeader'
 
 const Screen1 = () => {
     const navigation = useNavigation();
+    const [botonH, setBotonH] = useState(true);
 
     return (
         <>
-            <TemplateScreen />
+            {
+                botonH ? <TemplateScreen setBotonH={setBotonH} /> : <TemplateScreenNoHeader setBotonH={setBotonH} />
+            }
             <View style={styles.container}>
                 <Text>Elija alguna de estas opciones</Text>
 
                 <Box bg="rgba(255,255,255,0.7)" borderRadius="5" rounded="md"
                     style={[{ marginTop: 30 }, styles.shadows]}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}}>
                         <View style={{ justifyContent: 'center', alignItems: 'center', marginHorizontal: 3, borderRightWidth: 1, borderColor: '#DADADA' }}>
                             <Pressable onPress={() => { navigation.navigate('Add') }}>
                                 <Image source={
@@ -70,7 +74,10 @@ const styles = StyleSheet.create({
     container: {
         position: 'absolute',
         marginTop: 130,
-        marginHorizontal: 20,
+        left:0,
+        right:0,
+        marginHorizontal:20
+        
 
     },
     shadows: {

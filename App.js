@@ -4,12 +4,14 @@ import { NativeBaseProvider } from 'native-base';
 import { StyleSheet, Text, View } from 'react-native';
 import { AuthProvider } from './src/modules/context/authState';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { EvaIconsPack } from '@ui-kitten/eva-icons';
+import * as eva from '@eva-design/eva';
 import LoginScreen from './src/modules/modulo 1/LoginScreen';
 import TemplateScreen from './src/Template/TemplateScreen';
 import Screen1 from './src/modules/modulo 1/Screen1';
 import AddReporte from './src/modules/modulo 1/AddReporte';
 import ListReportes from './src/modules/modulo 1/ListReportes';
+import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
 const Stack = createNativeStackNavigator();
 function MyStack() {
   return (
@@ -42,7 +44,10 @@ export default function App() {
     <AuthProvider>
       <NativeBaseProvider>
         <NavigationContainer>
-          <MyStack />
+          <IconRegistry icons={EvaIconsPack} />
+          <ApplicationProvider {...eva} theme={eva.light}>
+            <MyStack />
+          </ApplicationProvider>
         </NavigationContainer>
       </NativeBaseProvider>
     </AuthProvider>
