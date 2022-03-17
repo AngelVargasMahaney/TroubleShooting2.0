@@ -20,9 +20,9 @@ function MyStack() {
       headerShown: false,
     }
     }>
-      {/* <Stack.Screen name="Login"
+      <Stack.Screen name="Login"
         component={LoginScreen}
-      /> */}
+      />
       <Stack.Screen name="Home"
         component={Screen1} />
       <Stack.Screen name="Add"
