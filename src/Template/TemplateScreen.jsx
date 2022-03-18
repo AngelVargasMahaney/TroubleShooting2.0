@@ -87,7 +87,6 @@ const TemplateScreen = (props) => {
                 style={{
                     flex: 1,
                     flexDirection: "column",
-
                     opacity: fadeAnim,         // Bind opacity to animated value
                 }}
             >
@@ -97,12 +96,6 @@ const TemplateScreen = (props) => {
                     accessoryRight={renderOverflowMenuAction}
                 />
             </Animated.View>
-            <View style={styles.containerFooter}>
-                <Image
-                    source={require('../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="xl" />
-
-            </View>
-
         </>
 
 

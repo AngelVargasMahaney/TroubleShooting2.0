@@ -12,6 +12,7 @@ import Screen1 from './src/modules/modulo 1/Screen1';
 import AddReporte from './src/modules/modulo 1/AddReporte';
 import ListReportes from './src/modules/modulo 1/ListReportes';
 import { ApplicationProvider, IconRegistry } from '@ui-kitten/components';
+import ScreenResumen from './src/modules/modulo 1/ScreenResumen';
 const Stack = createNativeStackNavigator();
 function MyStack() {
   return (
@@ -20,15 +21,12 @@ function MyStack() {
       headerShown: false,
     }
     }>
+      <Stack.Screen name="Resumen"
+        component={ScreenResumen}
+      />
       <Stack.Screen name="Login"
         component={LoginScreen}
-<<<<<<< HEAD
-      /> */}
-       <Stack.Screen name="Resumen"
-        component={ScreenResumen} />
-=======
       />
->>>>>>> 93b232d02974877c77b8ebc343eae6ee45c415ac
       <Stack.Screen name="Home"
         component={Screen1} />
       <Stack.Screen name="Add"

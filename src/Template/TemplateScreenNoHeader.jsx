@@ -48,7 +48,7 @@ const TemplateScreenNoHeader = (props) => {
 
                 <View style={styles.containerFooter}>
                     <Image
-                        source={require('../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="xl" />
+                        source={require('../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="lg" />
 
                 </View>
 
