@@ -40,6 +40,7 @@ function MyStack() {
 
 
 export default function App() {
+  
   return (
     <AuthProvider>
       <NativeBaseProvider>

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, useWindowDimensions, Image } from 'react-native'
+import { StyleSheet, Text, View, useWindowDimensions, Image, KeyboardAvoidingView } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import TemplateScreen from '../../Template/TemplateScreen'
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
@@ -15,7 +15,7 @@ import ImageView from 'react-native-image-view';
 const AddReporte = () => {
 
 
-    const [formData, setData] = useState({});
+
     const [miObjeto, setMiObjeto] = useState({
         event: '',
         date: '',
@@ -127,14 +127,15 @@ const AddReporte = () => {
     const [isImageViewVisible, setisImageViewVisible] = useState(false);
     const images = [
         {
-          source: {
-            uri: pickedImagePath,
-          },
-          title: 'Paris',
-          width: 806,
-          height: 720,
+            source: {
+                uri: pickedImagePath,
+            },
+            title: 'Paris',
+            width: 806,
+            height: 720,
         },
-      ];
+    ];
+    console.log(miObjeto)
     return (
         <>
 
@@ -146,71 +147,73 @@ const AddReporte = () => {
                 <View style={{ marginTop: -55 }}>
                     <ProgressSteps marginBottom={32} borderWidth={3} completedProgressBarColor={'#ED8512'} progressBarColor={'#062D73'} activeStepIconBorderColor={'#062D73'} completedStepIconColor={'#ED8512'}>
                         <ProgressStep scrollable={false} nextBtnText='Siguiente' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7 }}>
-                            <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
-                                <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-                                    <Text style={{ textAlign: 'center', color: '#01286B' }}>REGISTRO DE INCIDENTES</Text>
+                       
+                                <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
+                                    <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
+                                        <Text style={{ textAlign: 'center', color: '#01286B' }}>REGISTRO DE INCIDENTES</Text>
+                                    </View>
+                                    <VStack width="100%" mx="3" maxW="300px" my="4">
+                                        <FormControl>
+                                            <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                                                <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Fecha <Pressable onPress={showDatepicker}><Icon as={Ionicons} size={6} name='calendar-outline' /></Pressable></FormControl.Label>
+                                                    {show && (
+                                                        <DateTimePicker
+                                                            testID="dateTimePicker"
+                                                            value={date}
+                                                            mode={mode}
+                                                            is24Hour={true}
+                                                            onChange={onChange}
+                                                        />
+                                                    )}
+                                                    <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}</Text>
+                                                </View>
+                                                <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Hora <Pressable onPress={showTimepicker}><Icon as={Ionicons} size={6} name='time-outline' /></Pressable></FormControl.Label>
+                                                    <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getHours() + ':' + date.getMinutes()}</Text>
+                                                </View>
+
+
+                                            </View>
+
+
+                                            <FormControl.ErrorMessage _text={{
+                                                fontSize: 'xs'
+                                            }}>
+                                                Error Name
+                                            </FormControl.ErrorMessage>
+
+
+                                            <FormControl.Label _text={{
+                                                bold: true
+                                            }}>Superintendente <Pressable onPress={() => setModalBuscarSuperIntendente(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable> </FormControl.Label>
+
+
+                                            <Input defaultValue={miValorModalSuperIntendente} placeholder="John" onChangeText={value => setMiObjeto({
+                                                ...miObjeto,
+                                                superintendent: value
+                                            })} />
+                                            <FormControl.Label _text={{
+                                                bold: true
+                                            }}>Supervisor</FormControl.Label>
+                                            <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                ...miObjeto,
+                                                supervisor: value
+                                            })} />
+                                            <FormControl.Label _text={{
+                                                bold: true
+                                            }}>Operarios</FormControl.Label>
+                                            <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                ...miObjeto,
+                                                operators: value
+                                            })} />
+                                        </FormControl>
+                                    </VStack>
+
+
                                 </View>
-                                <VStack width="100%" mx="3" maxW="300px" my="4">
-                                    <FormControl>
-                                        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                                            <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
-                                                bold: true
-                                            }}>Fecha <Pressable onPress={showDatepicker}><Icon as={Ionicons} size={6} name='calendar-outline' /></Pressable></FormControl.Label>
-                                                {show && (
-                                                    <DateTimePicker
-                                                        testID="dateTimePicker"
-                                                        value={date}
-                                                        mode={mode}
-                                                        is24Hour={true}
-                                                        onChange={onChange}
-                                                    />
-                                                )}
-                                                <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}</Text>
-                                            </View>
-                                            <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
-                                                bold: true
-                                            }}>Hora <Pressable onPress={showTimepicker}><Icon as={Ionicons} size={6} name='time-outline' /></Pressable></FormControl.Label>
-                                                <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getHours() + ':' + date.getMinutes()}</Text>
-                                            </View>
-
-
-                                        </View>
-
-
-                                        <FormControl.ErrorMessage _text={{
-                                            fontSize: 'xs'
-                                        }}>
-                                            Error Name
-                                        </FormControl.ErrorMessage>
-
-
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Superintendente <Pressable onPress={() => setModalBuscarSuperIntendente(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable> </FormControl.Label>
-
-                                        <Input defaultValue={miValorModalSuperIntendente} placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Supervisor</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Operarios</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-                                    </FormControl>
-                                </VStack>
-
-
-                            </View>
                         </ProgressStep>
 
                         <ProgressStep nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
@@ -223,9 +226,9 @@ const AddReporte = () => {
                                         <FormControl.Label _text={{
                                             bold: true
                                         }}>Equipo Afectado <Pressable onPress={() => setModalBuscarEquipos(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable></FormControl.Label>
-                                        <Input defaultValue={miValorModalEquipos} placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
+                                        <Input defaultValue={miValorModalEquipos} placeholder="John" onChangeText={value => setMiObjeto({
+                                            ...miObjeto,
+                                            equipment_id: value
                                         })} />
 
                                         <FormControl.ErrorMessage _text={{
@@ -238,15 +241,18 @@ const AddReporte = () => {
                                         <FormControl.Label _text={{
                                             bold: true
                                         }}>Tiempo de Parada</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
+                                        <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                            ...miObjeto,
+                                            downtime: value
                                         })} />
 
                                         <FormControl.Label _text={{
                                             bold: true
                                         }}>Detalle de parada</FormControl.Label>
-                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                            ...miObjeto,
+                                            details: value
+                                        })} />
 
 
                                     </FormControl>
@@ -265,9 +271,9 @@ const AddReporte = () => {
                                         <FormControl.Label _text={{
                                             bold: true
                                         }}>Evento Ocurrido</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
+                                        <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                            ...miObjeto,
+                                            event: value
                                         })} />
                                         <FormControl.ErrorMessage _text={{
                                             fontSize: 'xs'
@@ -281,9 +287,9 @@ const AddReporte = () => {
                                         <FormControl.Label _text={{
                                             bold: true
                                         }}>Causas</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
+                                        <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                            ...miObjeto,
+                                            description: value
                                         })} />
                                     </FormControl>
                                 </VStack>
@@ -299,7 +305,10 @@ const AddReporte = () => {
                                         <FormControl.Label _text={{
                                             bold: true
                                         }}>Acciones realizadas</FormControl.Label>
-                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                            ...miObjeto,
+                                            take_actions: value
+                                        })} />
 
                                         <FormControl.ErrorMessage _text={{
                                             fontSize: 'xs'
@@ -312,7 +321,10 @@ const AddReporte = () => {
                                         <FormControl.Label _text={{
                                             bold: true
                                         }}>Resultados</FormControl.Label>
-                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                            ...miObjeto,
+                                            results: value
+                                        })} />
                                     </FormControl>
                                 </VStack>
                             </View>
@@ -354,15 +366,15 @@ const AddReporte = () => {
                                                         style={styles.image}
                                                     />
                                                 }
-                                                <View style={{ flexDirection: 'row',backgroundColor:'rgba(0,0,0,0.5)',width:'90%', justifyContent: 'center', borderRadius:7}}>
+                                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
                                                     <Pressable onPress={showImagePicker} style={{ marginRight: 10 }}>
-                                                        <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'}/>
+                                                        <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
                                                     </Pressable>
                                                     <Pressable style={{ marginLeft: 10 }}>
                                                         <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
                                                     </Pressable>
-                                                    <Pressable onPress={()=>setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
-                                                        <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'}/>
+                                                    <Pressable onPress={() => setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
+                                                        <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
                                                     </Pressable>
                                                 </View>
                                             </View>
@@ -395,7 +407,7 @@ const AddReporte = () => {
                                                     <Pressable style={{ marginLeft: 10 }}>
                                                         <Icon as={Ionicons} size={45} name="camera-outline" />
                                                     </Pressable>
-                                                   
+
                                                 </View>
                                                 <ImageView
                                                     isSwipeCloseEnabled={true}
@@ -404,7 +416,7 @@ const AddReporte = () => {
                                                     imageIndex={0}
                                                     isPinchZoomEnabled={true}
                                                     isVisible={isImageViewVisible}
-                                                    
+
                                                 />
                                             </View>
                                         </View>
@@ -500,6 +512,7 @@ const AddReporte = () => {
                         onPress={() => {
                             setModalBuscarSuperIntendente(false)
                             setMiValorModalSuperIntendente(inputSuperIntendente?.name)
+                            miObjeto.superintendent = inputSuperIntendente?.name
                         }}
                         accessoryRight={<Icon as={Ionicons} size={5} name='search' color={'white'} />}>
                         Registrar campo
@@ -578,6 +591,7 @@ const AddReporte = () => {
                         onPress={() => {
                             setModalBuscarEquipos(false)
                             setMiValorModalEquipos(inputEquipos?.name)
+                            miObjeto.equipment_id = inputEquipos?.name
                         }}
                         accessoryRight={<Icon as={Ionicons} size={5} name='search' color={'white'} />}>
                         Registrar campo
@@ -612,6 +626,5 @@ const styles = StyleSheet.create({
         height: '97%',
         resizeMode: 'cover',
         position: 'absolute'
-    }
-
+    },
 })
