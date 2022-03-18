@@ -23,6 +23,8 @@ function MyStack() {
       {/* <Stack.Screen name="Login"
         component={LoginScreen}
       /> */}
+       <Stack.Screen name="Resumen"
+        component={ScreenResumen} />
       <Stack.Screen name="Home"
         component={Screen1} />
       <Stack.Screen name="Add"
