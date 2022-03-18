@@ -4,10 +4,14 @@ import { Ionicons } from '@expo/vector-icons';
 import { Icon, Image, Menu, Pressable, HamburgerIcon, Box } from 'native-base';
 import { useNavigation } from '@react-navigation/native';
 import { Avatar, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const TemplateScreen = (props) => {
     console.log(props)
     const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
+    const [keyboardStatus, setKeyboardStatus] = useState(false);
+
+    
 
     useEffect(() => {
         Animated.timing(
@@ -27,15 +31,17 @@ const TemplateScreen = (props) => {
     const hideAlert = () => {
         setEstado(false);
     };
+    const navigation = useNavigation();
+
     const cerrarSesion = async () => {
         try {
             await AsyncStorage.removeItem('token')
             navigation.navigate('Login')
         } catch (e) {
-            // console.log(e)
+             console.log(e)
         }
 
-        // console.log('Done.')
+         console.log('Done.')
     }
     const MenuIcon = (props) => (
         <Icon as={Ionicons} size={5} name='ellipsis-vertical' />
@@ -69,7 +75,7 @@ const TemplateScreen = (props) => {
                 visible={menuVisible}
                 onBackdropPress={toggleMenu}
             >
-                <MenuItem accessoryLeft={LogoutIcon} title='Logout' onPress={() => { showAlert(); }} />
+                <MenuItem accessoryLeft={LogoutIcon} title='Logout' onPress={() => { cerrarSesion()}} />
                 <MenuItem accessoryLeft={OcultarIcon} title='Ocultar Header' onPress={() => { props.setBotonH(false) }} />
             </OverflowMenu>
 
@@ -85,17 +91,30 @@ const TemplateScreen = (props) => {
         <>
             <Animated.View                 // Special animatable View
                 style={{
-                    flex: 1,
+                  
                     flexDirection: "column",
+<<<<<<< HEAD
+=======
+                   
+>>>>>>> bceba8a143fdf44f99ee1fae20fb2c9545e2dd35
                     opacity: fadeAnim,         // Bind opacity to animated value
                 }}
             >
                 <TopNavigation
-                style={{backgroundColor:'#f0f2f0'}}
+                    style={{ backgroundColor: '#f0f2f0' }}
                     title={renderTitle}
                     accessoryRight={renderOverflowMenuAction}
                 />
             </Animated.View>
+<<<<<<< HEAD
+=======
+            {/* <View style={styles.containerFooter}>
+                <Image
+                    source={require('../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="xl" />
+            </View> */}
+
+
+>>>>>>> bceba8a143fdf44f99ee1fae20fb2c9545e2dd35
         </>
 
 

@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, useWindowDimensions, Image } from 'react-native'
+import { StyleSheet, Text, View, useWindowDimensions, Image, Dimensions } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import TemplateScreen from '../../Template/TemplateScreen'
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
@@ -15,7 +15,7 @@ import ImageView from 'react-native-image-view';
 const AddReporte = () => {
 
 
-    const [formData, setData] = useState({});
+
     const [miObjeto, setMiObjeto] = useState({
         event: '',
         date: '',
@@ -127,14 +127,17 @@ const AddReporte = () => {
     const [isImageViewVisible, setisImageViewVisible] = useState(false);
     const images = [
         {
-          source: {
-            uri: pickedImagePath,
-          },
-          title: 'Paris',
-          width: 806,
-          height: 720,
+            source: {
+                uri: pickedImagePath,
+            },
+            title: 'Paris',
+            width: 806,
+            height: 720,
         },
-      ];
+    ];
+    console.log(miObjeto)
+    const height = Dimensions.get('window').height;
+
     return (
         <>
 
@@ -142,286 +145,317 @@ const AddReporte = () => {
                 botonH ? <TemplateScreen setBotonH={setBotonH} /> : <TemplateScreenNoHeader setBotonH={setBotonH} />
             }
 
-            <View style={[styles.container, botonH ? { marginTop: 130 } : { marginTop: 90 }]}>
-                <View style={{ marginTop: -55 }}>
-                    <ProgressSteps marginBottom={32} borderWidth={3} completedProgressBarColor={'#ED8512'} progressBarColor={'#062D73'} activeStepIconBorderColor={'#062D73'} completedStepIconColor={'#ED8512'}>
-                        <ProgressStep scrollable={false} nextBtnText='Siguiente' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7 }}>
-                            <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
-                                <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-                                    <Text style={{ textAlign: 'center', color: '#01286B' }}>REGISTRO DE INCIDENTES</Text>
-                                </View>
-                                <VStack width="100%" mx="3" maxW="300px" my="4">
-                                    <FormControl>
-                                        <View style={{ flexDirection: 'row', marginBottom: 10 }}>
-                                            <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
-                                                bold: true
-                                            }}>Fecha <Pressable onPress={showDatepicker}><Icon as={Ionicons} size={6} name='calendar-outline' /></Pressable></FormControl.Label>
-                                                {show && (
-                                                    <DateTimePicker
-                                                        testID="dateTimePicker"
-                                                        value={date}
-                                                        mode={mode}
-                                                        is24Hour={true}
-                                                        onChange={onChange}
-                                                    />
-                                                )}
-                                                <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}</Text>
-                                            </View>
-                                            <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
-                                                bold: true
-                                            }}>Hora <Pressable onPress={showTimepicker}><Icon as={Ionicons} size={6} name='time-outline' /></Pressable></FormControl.Label>
-                                                <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getHours() + ':' + date.getMinutes()}</Text>
-                                            </View>
+            <View style={[styles.container, botonH ? { marginTop: 2 } : { marginTop: -30 }]}>
 
-
+                <ScrollView>
+                    <View style={{ flex: 1 }}>
+                        <ProgressSteps marginBottom={32} borderWidth={3} completedProgressBarColor={'#ED8512'} progressBarColor={'#062D73'} activeStepIconBorderColor={'#062D73'} completedStepIconColor={'#ED8512'}>
+                            <ProgressStep scrollable={false} nextBtnText='Siguiente' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7 }}>
+                                <ScrollView>
+                                    <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
+                                        <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
+                                            <Text style={{ textAlign: 'center', color: '#01286B' }}>REGISTRO DE INCIDENTES</Text>
                                         </View>
+                                        <VStack width="100%" mx="3" maxW="300px" my="4">
+                                            <FormControl>
+                                                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                                                    <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
+                                                        bold: true
+                                                    }}>Fecha <Pressable onPress={showDatepicker}><Icon as={Ionicons} size={6} name='calendar-outline' /></Pressable></FormControl.Label>
+                                                        {show && (
+                                                            <DateTimePicker
+                                                                testID="dateTimePicker"
+                                                                value={date}
+                                                                mode={mode}
+                                                                is24Hour={true}
+                                                                onChange={onChange}
+                                                            />
+                                                        )}
+                                                        <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}</Text>
+                                                    </View>
+                                                    <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
+                                                        bold: true
+                                                    }}>Hora <Pressable onPress={showTimepicker}><Icon as={Ionicons} size={6} name='time-outline' /></Pressable></FormControl.Label>
+                                                        <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getHours() + ':' + date.getMinutes()}</Text>
+                                                    </View>
 
 
-                                        <FormControl.ErrorMessage _text={{
-                                            fontSize: 'xs'
-                                        }}>
-                                            Error Name
-                                        </FormControl.ErrorMessage>
-
-
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Superintendente <Pressable onPress={() => setModalBuscarSuperIntendente(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable> </FormControl.Label>
-
-                                        <Input defaultValue={miValorModalSuperIntendente} placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Supervisor</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Operarios</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-                                    </FormControl>
-                                </VStack>
-
-
-                            </View>
-                        </ProgressStep>
-
-                        <ProgressStep nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
-                            <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
-                                <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-                                    <Text style={{ textAlign: 'center', color: '#01286B' }}>EQUIPO Y TIEMPO DE PARADA</Text>
-                                </View>
-                                <VStack width="100%" mx="3" maxW="300px" my="4">
-                                    <FormControl>
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Equipo Afectado <Pressable onPress={() => setModalBuscarEquipos(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable></FormControl.Label>
-                                        <Input defaultValue={miValorModalEquipos} placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-
-                                        <FormControl.ErrorMessage _text={{
-                                            fontSize: 'xs'
-                                        }}>
-                                            Error Name
-                                        </FormControl.ErrorMessage>
-
-
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Tiempo de Parada</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Detalle de parada</FormControl.Label>
-                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
-
-
-                                    </FormControl>
-                                </VStack>
-
-
-                            </View>
-                        </ProgressStep>
-                        <ProgressStep nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
-                            <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
-                                <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-                                    <Text style={{ textAlign: 'center', color: '#01286B' }}>EVENTO Y CAUSAS ASOCIADAS</Text>
-                                </View>
-                                <VStack width="100%" mx="3" maxW="300px" my="4">
-                                    <FormControl>
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Evento Ocurrido</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-                                        <FormControl.ErrorMessage _text={{
-                                            fontSize: 'xs'
-                                        }}>
-                                            Error Name
-                                        </FormControl.ErrorMessage>
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Descripción del Evento</FormControl.Label>
-                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Causas</FormControl.Label>
-                                        <Input placeholder="John" onChangeText={value => setData({
-                                            ...formData,
-                                            name: value
-                                        })} />
-                                    </FormControl>
-                                </VStack>
-                            </View>
-                        </ProgressStep>
-                        <ProgressStep nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
-                            <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
-                                <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-                                    <Text style={{ textAlign: 'center', color: '#01286B' }}>ACCIONES TOMADAS</Text>
-                                </View>
-                                <VStack width="100%" mx="3" maxW="300px" my="4">
-                                    <FormControl>
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Acciones realizadas</FormControl.Label>
-                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
-
-                                        <FormControl.ErrorMessage _text={{
-                                            fontSize: 'xs'
-                                        }}>
-                                            Error Name
-                                        </FormControl.ErrorMessage>
-                                        <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%', marginVertical: 10 }}>
-                                            <Text style={{ textAlign: 'center', color: '#01286B' }}>RESULTADOS OBTENIDOS</Text>
-                                        </View>
-                                        <FormControl.Label _text={{
-                                            bold: true
-                                        }}>Resultados</FormControl.Label>
-                                        <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
-                                    </FormControl>
-                                </VStack>
-                            </View>
-                        </ProgressStep>
-                        <ProgressStep finishBtnText="Enviar" nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
-                            <View style={[{ marginBottom: 35 }, styles.shadows]}>
-                                <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%', marginBottom: 20 }}>
-                                    <Text style={{ textAlign: 'center', color: '#01286B' }}>REGISTRO DE INCIDENTES</Text>
-                                </View>
-                                <ScrollView horizontal>
-                                    <FormControl style={{ flexDirection: 'row', margin: 10 }}>
-
-                                        <View style={{ marginRight: 20 }}>
-
-                                            <FormControl.Label _text={{
-                                                bold: true
-                                            }}>Evidencia N° 1</FormControl.Label>
-
-                                            <View style={{
-                                                shadowColor: "#000",
-                                                shadowOffset: {
-                                                    width: 0,
-                                                    height: 3,
-                                                },
-                                                shadowOpacity: 0.2,
-                                                shadowRadius: 4.65,
-                                                elevation: 6,
-                                                width: 200,
-                                                height: 200,
-                                                backgroundColor: 'rgba(255,255,255,0.5)',
-                                                borderRadius: 7,
-                                                flex: 1,
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                            }}>
-                                                {
-                                                    pickedImagePath !== '' && <Image
-                                                        source={{ uri: pickedImagePath }}
-                                                        style={styles.image}
-                                                    />
-                                                }
-                                                <View style={{ flexDirection: 'row',backgroundColor:'rgba(0,0,0,0.5)',width:'90%', justifyContent: 'center', borderRadius:7}}>
-                                                    <Pressable onPress={showImagePicker} style={{ marginRight: 10 }}>
-                                                        <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'}/>
-                                                    </Pressable>
-                                                    <Pressable style={{ marginLeft: 10 }}>
-                                                        <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
-                                                    </Pressable>
-                                                    <Pressable onPress={()=>setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
-                                                        <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'}/>
-                                                    </Pressable>
                                                 </View>
-                                            </View>
-                                        </View>
-                                        <View style={{ marginLeft: 20 }}>
-                                            <FormControl.Label _text={{
-                                                bold: true
-                                            }}>Evidencia N° 2</FormControl.Label>
-                                            <View style={{
-                                                shadowColor: "#000",
-                                                shadowOffset: {
-                                                    width: 0,
-                                                    height: 3,
-                                                },
-                                                shadowOpacity: 0.2,
-                                                shadowRadius: 4.65,
-                                                elevation: 6,
-                                                width: 200,
-                                                height: 200,
-                                                backgroundColor: 'rgba(255,255,255,0.5)',
-                                                borderRadius: 7,
-                                                flex: 1,
-                                                justifyContent: 'center',
-                                                alignItems: 'center',
-                                            }}>
-                                                <View style={{ flexDirection: 'row' }}>
-                                                    <Pressable style={{ marginRight: 10 }}>
-                                                        <Icon as={Ionicons} size={45} name="image-outline" />
-                                                    </Pressable>
-                                                    <Pressable style={{ marginLeft: 10 }}>
-                                                        <Icon as={Ionicons} size={45} name="camera-outline" />
-                                                    </Pressable>
-                                                   
-                                                </View>
-                                                <ImageView
-                                                    isSwipeCloseEnabled={true}
-                                                    onClose={() => setisImageViewVisible(false)}
-                                                    images={images}
-                                                    imageIndex={0}
-                                                    isPinchZoomEnabled={true}
-                                                    isVisible={isImageViewVisible}
-                                                    
-                                                />
-                                            </View>
-                                        </View>
 
-                                    </FormControl>
+
+                                                <FormControl.ErrorMessage _text={{
+                                                    fontSize: 'xs'
+                                                }}>
+                                                    Error Name
+                                                </FormControl.ErrorMessage>
+
+
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Superintendente <Pressable onPress={() => setModalBuscarSuperIntendente(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable> </FormControl.Label>
+
+
+                                                <Input defaultValue={miValorModalSuperIntendente} placeholder="John" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    superintendent: value
+                                                })} />
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Supervisor</FormControl.Label>
+                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    supervisor: value
+                                                })} />
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Operarios</FormControl.Label>
+                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    operators: value
+                                                })} />
+                                            </FormControl>
+                                        </VStack>
+                                    </View>
                                 </ScrollView>
-                            </View>
-                        </ProgressStep>
+                            </ProgressStep>
+
+                            <ProgressStep nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
+                                <ScrollView>
+
+                                    <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
+                                        <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
+                                            <Text style={{ textAlign: 'center', color: '#01286B' }}>EQUIPO Y TIEMPO DE PARADA</Text>
+                                        </View>
+                                        <VStack width="100%" mx="3" maxW="300px" my="4">
+                                            <FormControl>
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Equipo Afectado <Pressable onPress={() => setModalBuscarEquipos(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable></FormControl.Label>
+                                                <Input defaultValue={miValorModalEquipos} placeholder="John" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    equipment_id: value
+                                                })} />
+
+                                                <FormControl.ErrorMessage _text={{
+                                                    fontSize: 'xs'
+                                                }}>
+                                                    Error Name
+                                                </FormControl.ErrorMessage>
 
 
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Tiempo de Parada</FormControl.Label>
+                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    downtime: value
+                                                })} />
+
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Detalle de parada</FormControl.Label>
+                                                <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    details: value
+                                                })} />
 
 
-                    </ProgressSteps>
+                                            </FormControl>
+                                        </VStack>
 
-                </View>
+
+                                    </View>
+                                </ScrollView>
+                            </ProgressStep>
+                            <ProgressStep nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
+                                <ScrollView>
+
+                                    <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
+                                        <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
+                                            <Text style={{ textAlign: 'center', color: '#01286B' }}>EVENTO Y CAUSAS ASOCIADAS</Text>
+                                        </View>
+                                        <VStack width="100%" mx="3" maxW="300px" my="4">
+                                            <FormControl>
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Evento Ocurrido</FormControl.Label>
+                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    event: value
+                                                })} />
+                                                <FormControl.ErrorMessage _text={{
+                                                    fontSize: 'xs'
+                                                }}>
+                                                    Error Name
+                                                </FormControl.ErrorMessage>
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Descripción del Evento</FormControl.Label>
+                                                <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Causas</FormControl.Label>
+                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    description: value
+                                                })} />
+                                            </FormControl>
+                                        </VStack>
+                                    </View>
+                                </ScrollView>
+                            </ProgressStep>
+
+                            <ProgressStep nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
+                                <ScrollView>
+
+                                    <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
+                                        <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
+                                            <Text style={{ textAlign: 'center', color: '#01286B' }}>ACCIONES TOMADAS</Text>
+                                        </View>
+                                        <VStack width="100%" mx="3" maxW="300px" my="4">
+                                            <FormControl>
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Acciones realizadas</FormControl.Label>
+                                                <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    take_actions: value
+                                                })} />
+
+                                                <FormControl.ErrorMessage _text={{
+                                                    fontSize: 'xs'
+                                                }}>
+                                                    Error Name
+                                                </FormControl.ErrorMessage>
+                                                <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%', marginVertical: 10 }}>
+                                                    <Text style={{ textAlign: 'center', color: '#01286B' }}>RESULTADOS OBTENIDOS</Text>
+                                                </View>
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Resultados</FormControl.Label>
+                                                <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    results: value
+                                                })} />
+                                            </FormControl>
+                                        </VStack>
+                                    </View>
+                                </ScrollView>
+                            </ProgressStep>
+                            <ProgressStep finishBtnText="Enviar" nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
+                                <View style={[{ marginBottom: 35 }, styles.shadows]}>
+                                    <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%', marginBottom: 20 }}>
+                                        <Text style={{ textAlign: 'center', color: '#01286B' }}>REGISTRO DE INCIDENTES</Text>
+                                    </View>
+                                    <ScrollView horizontal>
+                                        <FormControl style={{ flexDirection: 'row', margin: 10 }}>
+
+                                            <View style={{ marginRight: 20 }}>
+
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Evidencia N° 1</FormControl.Label>
+
+                                                <View style={{
+                                                    shadowColor: "#000",
+                                                    shadowOffset: {
+                                                        width: 0,
+                                                        height: 3,
+                                                    },
+                                                    shadowOpacity: 0.2,
+                                                    shadowRadius: 4.65,
+                                                    elevation: 6,
+                                                    width: 200,
+                                                    height: 200,
+                                                    backgroundColor: 'rgba(255,255,255,0.5)',
+                                                    borderRadius: 7,
+                                                    flex: 1,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}>
+                                                    {
+                                                        pickedImagePath !== '' && <Image
+                                                            source={{ uri: pickedImagePath }}
+                                                            style={styles.image}
+                                                        />
+                                                    }
+                                                    <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
+                                                        <Pressable onPress={showImagePicker} style={{ marginRight: 10 }}>
+                                                            <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
+                                                        </Pressable>
+                                                        <Pressable style={{ marginLeft: 10 }}>
+                                                            <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
+                                                        </Pressable>
+                                                        <Pressable onPress={() => setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
+                                                            <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
+                                                        </Pressable>
+                                                    </View>
+                                                </View>
+                                            </View>
+                                            <View style={{ marginLeft: 20 }}>
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Evidencia N° 2</FormControl.Label>
+                                                <View style={{
+                                                    shadowColor: "#000",
+                                                    shadowOffset: {
+                                                        width: 0,
+                                                        height: 3,
+                                                    },
+                                                    shadowOpacity: 0.2,
+                                                    shadowRadius: 4.65,
+                                                    elevation: 6,
+                                                    width: 200,
+                                                    height: 200,
+                                                    backgroundColor: 'rgba(255,255,255,0.5)',
+                                                    borderRadius: 7,
+                                                    flex: 1,
+                                                    justifyContent: 'center',
+                                                    alignItems: 'center',
+                                                }}>
+                                                    <View style={{ flexDirection: 'row' }}>
+                                                        <Pressable style={{ marginRight: 10 }}>
+                                                            <Icon as={Ionicons} size={45} name="image-outline" />
+                                                        </Pressable>
+                                                        <Pressable style={{ marginLeft: 10 }}>
+                                                            <Icon as={Ionicons} size={45} name="camera-outline" />
+                                                        </Pressable>
+
+                                                    </View>
+                                                    <ImageView
+                                                        isSwipeCloseEnabled={true}
+                                                        onClose={() => setisImageViewVisible(false)}
+                                                        images={images}
+                                                        imageIndex={0}
+                                                        isPinchZoomEnabled={true}
+                                                        isVisible={isImageViewVisible}
+
+                                                    />
+                                                </View>
+                                            </View>
+
+                                        </FormControl>
+                                    </ScrollView>
+                                </View>
+                            </ProgressStep>
+                        </ProgressSteps>
+                    </View>
+                </ScrollView>
+
 
             </View>
+            <View style={styles.containerFooter}>
+                <View style={{ width: 120, height: 120 }}>
+                    <Image
+                        source={require('../../../assets/backgrounds/Colors.png')} style={{
+                            height: '100%',
+                            width: '100%',
+                            resizeMode: 'cover',
+
+                        }} />
+                </View>
+            </View>
+
             {/* {
                 botonH ? (<View style={styles.containerFooter}>
                     <Image
@@ -500,6 +534,7 @@ const AddReporte = () => {
                         onPress={() => {
                             setModalBuscarSuperIntendente(false)
                             setMiValorModalSuperIntendente(inputSuperIntendente?.name)
+                            miObjeto.superintendent = inputSuperIntendente?.name
                         }}
                         accessoryRight={<Icon as={Ionicons} size={5} name='search' color={'white'} />}>
                         Registrar campo
@@ -578,6 +613,7 @@ const AddReporte = () => {
                         onPress={() => {
                             setModalBuscarEquipos(false)
                             setMiValorModalEquipos(inputEquipos?.name)
+                            miObjeto.equipment_id = inputEquipos?.name
                         }}
                         accessoryRight={<Icon as={Ionicons} size={5} name='search' color={'white'} />}>
                         Registrar campo
@@ -593,15 +629,18 @@ export default AddReporte
 const styles = StyleSheet.create({
     containerFooter: {
 
-        flex: 1,
+        position: 'absolute',
         zIndex: -1,
-        flexDirection: "column-reverse",
-        alignItems: "flex-start",
+        width: 150,
+        height: '100%',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end',
+
     },
     container: {
-        position: 'absolute',
-        marginTop: 130,
+        flex: 1,
         marginHorizontal: 20,
+
 
     },
     backdrop: {
@@ -612,6 +651,5 @@ const styles = StyleSheet.create({
         height: '97%',
         resizeMode: 'cover',
         position: 'absolute'
-    }
-
+    },
 })

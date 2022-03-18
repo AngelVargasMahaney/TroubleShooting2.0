@@ -22,7 +22,7 @@ const TemplateScreenNoHeader = (props) => {
         <>
             <Animated.View                 // Special animatable View
                 style={{
-                    flex: 1,
+                   
                     flexDirection: "column",
                     
                     opacity: fadeAnim,         // Bind opacity to animated value
@@ -46,11 +46,11 @@ const TemplateScreenNoHeader = (props) => {
 
                 </View>
 
-                <View style={styles.containerFooter}>
+                {/* <View style={styles.containerFooter}>
                     <Image
                         source={require('../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="lg" />
 
-                </View>
+                </View> */}
 
             </Animated.View>
 
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     icon2: {
-        marginTop: 15,
+        marginTop: 10,
         fontSize: 20,
         color: 'rgba(1,40,107,1)'
     },
