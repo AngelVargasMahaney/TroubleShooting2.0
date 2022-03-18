@@ -61,7 +61,10 @@ const Screen1 = () => {
                 </View>
 
             </View>
-           
+            <View style={styles.containerFooter}>
+                <Image
+                    source={require('../../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="xl" />
+            </View>
         </>
 
     )
