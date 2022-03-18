@@ -20,11 +20,15 @@ function MyStack() {
       headerShown: false,
     }
     }>
-      {/* <Stack.Screen name="Login"
+      <Stack.Screen name="Login"
         component={LoginScreen}
+<<<<<<< HEAD
       /> */}
        <Stack.Screen name="Resumen"
         component={ScreenResumen} />
+=======
+      />
+>>>>>>> 93b232d02974877c77b8ebc343eae6ee45c415ac
       <Stack.Screen name="Home"
         component={Screen1} />
       <Stack.Screen name="Add"

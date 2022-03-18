@@ -54,7 +54,7 @@ const TemplateScreen = (props) => {
         setMenuVisible(!menuVisible);
     };
     const renderMenuAction = () => (
-        <TopNavigationAction style={{ marginTop: 41 }} icon={MenuIcon} onPress={toggleMenu} />
+        <TopNavigationAction style={{ marginTop: 21 }} icon={MenuIcon} onPress={toggleMenu} />
     );
     const renderOverflowMenuAction = () => (
         <React.Fragment>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     logo: {
-        marginTop: 40,
+        marginTop: 20,
         width: 89,
         height: 50,
     },
@@ -126,6 +126,6 @@ const styles = StyleSheet.create({
         // fontFamily: "roboto-700",
         fontSize: 15,
         marginLeft: 25,
-        marginTop: 40
+        marginTop: 20
     },
 });
