@@ -354,15 +354,15 @@ const AddReporte = () => {
                                                         style={styles.image}
                                                     />
                                                 }
-                                                <View style={{ flexDirection: 'row',backgroundColor:'rgba(255,255,255,0.5)'}}>
+                                                <View style={{ flexDirection: 'row',backgroundColor:'rgba(0,0,0,0.5)',width:'90%', justifyContent: 'center', borderRadius:7}}>
                                                     <Pressable onPress={showImagePicker} style={{ marginRight: 10 }}>
-                                                        <Icon as={Ionicons} size={35} name="image-outline" />
+                                                        <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'}/>
                                                     </Pressable>
                                                     <Pressable style={{ marginLeft: 10 }}>
-                                                        <Icon as={Ionicons} size={35} name="camera-outline" />
+                                                        <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
                                                     </Pressable>
-                                                    <Pressable onPress={()=>setisImageViewVisible(true)} style={{ marginLeft: 10 }}>
-                                                        <Icon as={Ionicons} size={35} name="scan" />
+                                                    <Pressable onPress={()=>setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
+                                                        <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'}/>
                                                     </Pressable>
                                                 </View>
                                             </View>
