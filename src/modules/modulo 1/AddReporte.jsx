@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, useWindowDimensions, Image, Dimensions } from '
 import React, { useState, useEffect } from 'react'
 import TemplateScreen from '../../Template/TemplateScreen'
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import { FormControl, Input, VStack, Pressable, Icon, TextArea, FlatList, HStack, ScrollView } from 'native-base';
+import { FormControl, Input, VStack, Pressable, Icon, TextArea, FlatList, HStack, ScrollView, InputGroup, InputLeftAddon, InputRightAddon } from 'native-base';
 import TemplateScreenNoHeader from '../../Template/TemplateScreenNoHeader';
 import { Ionicons } from '@expo/vector-icons';
 import { getEquiment, getSuperIntendent } from '../services/misServicios';
@@ -11,14 +11,16 @@ import { Card, Modal, Button } from '@ui-kitten/components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
 import ImageView from 'react-native-image-view';
+import { useNavigation } from '@react-navigation/native';
+import imgDefault from '../../../assets/logos/Logo_Antapaccay.png'
 
 const AddReporte = () => {
 
-
+    const [dateS, setDateS] = useState(new Date(1598051730000));
 
     const [miObjeto, setMiObjeto] = useState({
         event: '',
-        date: '',
+        date: dateS,
         description: '',
         attributed_cause: '',
         superintendent: '',
@@ -67,14 +69,16 @@ const AddReporte = () => {
     const [miValorModalEquipos, setMiValorModalEquipos] = useState('')
 
     // DATEPICKER CONSTANTES
-    const [date, setDate] = useState(new Date(1598051730000));
+
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
         setShow(false);
-        setDate(currentDate);
+        setDateS(currentDate);
+        miObjeto.date = currentDate
     };
+
 
     const showMode = (currentMode) => {
         setShow(true);
@@ -90,13 +94,24 @@ const AddReporte = () => {
     };
     //////////////////////////////////
 
-    const [pickedImagePath, setPickedImagePath] = useState(miObjeto.foto1[0]?.base64);
+    const [pickedImagePath, setPickedImagePath] = useState('');
+    const [pickedImagePath2, setPickedImagePath2] = useState('');
     const [dataFoto, setDataFoto] = useState(
 
         {
             model_type: 2,
             attachmentable_type: "App\\Models\\equipos\\Troubleshooting",
             attachmentable_id: 1,
+            base64: ""
+        }
+
+    )
+    const [dataFoto2, setDataFoto2] = useState(
+
+        {
+            model_type: 2,
+            attachmentable_type: "App\\Models\\equipos\\Troubleshooting",
+            attachmentable_id: 2,
             base64: ""
         }
 
@@ -124,19 +139,42 @@ const AddReporte = () => {
             miObjeto.foto1[0] = dataFoto
         }
     }
+    const showImagePicker2 = async () => {
+        // Apreguntar por los permisos
+        const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+        if (permissionResult.granted === false) {
+            alert("Te has negado a permitir que esta aplicación acceda a tus fotos!");
+            return;
+        }
+
+        const result = await ImagePicker.launchImageLibraryAsync({
+            allowsEditing: false,
+            base64: true,
+        });
+        if (!result.cancelled) {
+            setPickedImagePath2(result.uri);
+
+            const source = { uri: 'data:image/jpeg;base64,' + result.base64 };
+            // console.warn(source.uri);
+            dataFoto2.base64 = source.uri
+            miObjeto.foto1[1] = dataFoto2
+        }
+    }
     const [isImageViewVisible, setisImageViewVisible] = useState(false);
     const images = [
         {
             source: {
                 uri: pickedImagePath,
             },
-            title: 'Paris',
+            title: 'Evidencias',
             width: 806,
             height: 720,
         },
     ];
     console.log(miObjeto)
     const height = Dimensions.get('window').height;
+    const navigation = useNavigation()
 
     return (
         <>
@@ -165,18 +203,19 @@ const AddReporte = () => {
                                                         {show && (
                                                             <DateTimePicker
                                                                 testID="dateTimePicker"
-                                                                value={date}
+                                                                value={dateS}
                                                                 mode={mode}
                                                                 is24Hour={true}
                                                                 onChange={onChange}
                                                             />
                                                         )}
-                                                        <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear()}</Text>
+                                                        <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{dateS.getDate() + '/' + (dateS.getMonth() + 1) + '/' + dateS.getFullYear()}</Text>
+
                                                     </View>
                                                     <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
                                                         bold: true
                                                     }}>Hora <Pressable onPress={showTimepicker}><Icon as={Ionicons} size={6} name='time-outline' /></Pressable></FormControl.Label>
-                                                        <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{date.getHours() + ':' + date.getMinutes()}</Text>
+                                                        <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{dateS.getHours() + ':' + dateS.getMinutes()}</Text>
                                                     </View>
 
 
@@ -195,21 +234,21 @@ const AddReporte = () => {
                                                 }}>Superintendente <Pressable onPress={() => setModalBuscarSuperIntendente(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable> </FormControl.Label>
 
 
-                                                <Input defaultValue={miValorModalSuperIntendente} placeholder="John" onChangeText={value => setMiObjeto({
+                                                <Input defaultValue={miValorModalSuperIntendente} placeholder="Juan Ramírez Choque" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     superintendent: value
                                                 })} />
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Supervisor</FormControl.Label>
-                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                <Input placeholder="Mariana Tapia" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     supervisor: value
                                                 })} />
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Operarios</FormControl.Label>
-                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                <Input placeholder="César Solórzano" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     operators: value
                                                 })} />
@@ -231,7 +270,7 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Equipo Afectado <Pressable onPress={() => setModalBuscarEquipos(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable></FormControl.Label>
-                                                <Input defaultValue={miValorModalEquipos} placeholder="John" onChangeText={value => setMiObjeto({
+                                                <Input defaultValue={miValorModalEquipos} placeholder="Molino SAG" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     equipment_id: value
                                                 })} />
@@ -246,15 +285,25 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Tiempo de Parada</FormControl.Label>
-                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
-                                                    ...miObjeto,
-                                                    downtime: value
-                                                })} />
+
+                                                <InputGroup w={{
+                                                    base: "70%",
+                                                    md: "285"
+                                                }}>
+
+                                                    <Input w={{
+                                                        base: "50%",
+                                                    }} keyboardType='numeric' placeholder="0.5" onChangeText={value => setMiObjeto({
+                                                        ...miObjeto,
+                                                        downtime: value
+                                                    })} />
+                                                    <InputRightAddon children={"hrs"} />
+                                                </InputGroup>
 
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Detalle de parada</FormControl.Label>
-                                                <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                <TextArea h={20} placeholder="El Molino SAG se detuvo durante desde las 10:30 hrs hasta las 11:00 hrs, debido a ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     details: value
                                                 })} />
@@ -278,8 +327,8 @@ const AddReporte = () => {
                                             <FormControl>
                                                 <FormControl.Label _text={{
                                                     bold: true
-                                                }}>Evento Ocurrido</FormControl.Label>
-                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                }}>Nombre del Evento Ocurrido</FormControl.Label>
+                                                <Input placeholder="Parada del Molino SAG" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     event: value
                                                 })} />
@@ -291,14 +340,18 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Descripción del Evento</FormControl.Label>
-                                                <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" />
-                                                <FormControl.Label _text={{
-                                                    bold: true
-                                                }}>Causas</FormControl.Label>
-                                                <Input placeholder="John" onChangeText={value => setMiObjeto({
+                                                <TextArea h={20} placeholder="A las 10:30 hrs se detuvo el Molino SAG para realizar el mantenimiento correspondiente ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     description: value
                                                 })} />
+                                                <FormControl.Label _text={{
+                                                    bold: true
+                                                }}>Causa del Evento</FormControl.Label>
+                                                <TextArea h={20} placeholder="Se realizó el mantenimiento respectivo según ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                    ...miObjeto,
+                                                    attributed_cause: value
+                                                })} />
+
                                             </FormControl>
                                         </VStack>
                                     </View>
@@ -317,7 +370,7 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Acciones realizadas</FormControl.Label>
-                                                <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                <TextArea h={20} placeholder="1. Revisión de Componentes del Molino ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     take_actions: value
                                                 })} />
@@ -333,7 +386,7 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Resultados</FormControl.Label>
-                                                <TextArea h={20} placeholder="Text Area Placeholder" w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                <TextArea h={20} placeholder="La revisión se realizó correctamente, solucionando todos los problemas encontrados." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     results: value
                                                 })} />
@@ -342,7 +395,16 @@ const AddReporte = () => {
                                     </View>
                                 </ScrollView>
                             </ProgressStep>
-                            <ProgressStep finishBtnText="Enviar" nextBtnText='Siguiente' previousBtnText='Anterior' nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }} previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }} previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}>
+                            <ProgressStep
+                                finishBtnText="Enviar"
+                                nextBtnText='Siguiente'
+                                previousBtnText='Anterior'
+                                nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }}
+                                nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }}
+                                previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }}
+                                previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}
+                                onSubmit={() => navigation.navigate('Resumen', { miObjeto }, setBotonH)}
+                            >
                                 <View style={[{ marginBottom: 35 }, styles.shadows]}>
                                     <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%', marginBottom: 20 }}>
                                         <Text style={{ textAlign: 'center', color: '#01286B' }}>REGISTRO DE INCIDENTES</Text>
@@ -374,10 +436,13 @@ const AddReporte = () => {
                                                     alignItems: 'center',
                                                 }}>
                                                     {
-                                                        pickedImagePath !== '' && <Image
-                                                            source={{ uri: pickedImagePath }}
-                                                            style={styles.image}
-                                                        />
+                     
+                                                            <Image
+
+                                                                source={pickedImagePath == '' ? require('../../../assets/logos/Logo_Antapaccay.png') : ({ uri: pickedImagePath }) }
+                                                                style={pickedImagePath == '' ? styles.image2 : styles.image}
+                                                            />
+                                                       
                                                     }
                                                     <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
                                                         <Pressable onPress={showImagePicker} style={{ marginRight: 10 }}>
@@ -392,10 +457,12 @@ const AddReporte = () => {
                                                     </View>
                                                 </View>
                                             </View>
-                                            <View style={{ marginLeft: 20 }}>
+                                            <View style={{ marginRight: 20 }}>
+
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Evidencia N° 2</FormControl.Label>
+
                                                 <View style={{
                                                     shadowColor: "#000",
                                                     shadowOffset: {
@@ -413,26 +480,29 @@ const AddReporte = () => {
                                                     justifyContent: 'center',
                                                     alignItems: 'center',
                                                 }}>
-                                                    <View style={{ flexDirection: 'row' }}>
-                                                        <Pressable style={{ marginRight: 10 }}>
-                                                            <Icon as={Ionicons} size={45} name="image-outline" />
+                                                    {
+                     
+                                                            <Image
+
+                                                                source={pickedImagePath2 == '' ? require('../../../assets/logos/Logo_Antapaccay.png') : ({ uri: pickedImagePath2 }) }
+                                                                style={pickedImagePath2 == '' ? styles.image2 : styles.image}
+                                                            />
+                                                       
+                                                    }
+                                                    <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
+                                                        <Pressable onPress={showImagePicker2} style={{ marginRight: 10 }}>
+                                                            <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable>
                                                         <Pressable style={{ marginLeft: 10 }}>
-                                                            <Icon as={Ionicons} size={45} name="camera-outline" />
+                                                            <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable>
-
+                                                        <Pressable onPress={() => setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
+                                                            <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
+                                                        </Pressable>
                                                     </View>
-                                                    <ImageView
-                                                        isSwipeCloseEnabled={true}
-                                                        onClose={() => setisImageViewVisible(false)}
-                                                        images={images}
-                                                        imageIndex={0}
-                                                        isPinchZoomEnabled={true}
-                                                        isVisible={isImageViewVisible}
-
-                                                    />
                                                 </View>
                                             </View>
+                                          
 
                                         </FormControl>
                                     </ScrollView>
@@ -652,4 +722,10 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         position: 'absolute'
     },
+    image2:{
+        width: '92%',
+        height: '97%',
+        resizeMode: 'contain',
+        position: 'absolute'
+    }
 })

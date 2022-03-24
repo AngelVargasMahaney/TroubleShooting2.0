@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView, Image, StatusBar } from 'react-native';
+import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView, Image, StatusBar, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
 import { Box, Button, FormControl, Icon, Input, Stack, } from 'native-base';
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
@@ -12,6 +12,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
 const image = require('../../../assets/backgrounds/Pantalla_login.png')
 const logo_blanco = require('../../../assets/logos/Logo_blanco.png')
+import { EvilIcons } from '@expo/vector-icons';
 
 const LoginScreen = () => {
 
@@ -19,6 +20,9 @@ const LoginScreen = () => {
         email: '',
         password: '',
     })
+
+    const [cargando, setCargando] = useState(false)
+
     const [Estado, setEstado] = useState(false);
     const showAlert = () => {
         setEstado(true);
@@ -27,10 +31,14 @@ const LoginScreen = () => {
         setEstado(false);
     };
 
+    const [textoCambiante, setTextoCambiante] = useState('Ingresar')
+
     const { token, setToken } = useAuth()
     const navigation = useNavigation();
 
     const doLogin = () => {
+        setCargando(true)
+        setTextoCambiante('Cargando')
         postLogin(formularioDatos).then((response) => {
             setToken(response.data.token)
             Asyncstorage.setItem('token', response.data.token).then((response) => {
@@ -38,6 +46,9 @@ const LoginScreen = () => {
                 handleOpen()
 
             })
+            setCargando(false)
+            navigation.navigate('Home')
+            setTextoCambiante('Ingreso Exitoso')
         }, err => {
             console.warn(err)
             alert("Usuario no encontrado")
@@ -101,7 +112,15 @@ const LoginScreen = () => {
                                         <FormControl.Label _text={{ color: '#669EFF', fontSize: 14 }}>CONTRASEÑA</FormControl.Label>
                                         <Input onChangeText={value => setFormularioDatos({ ...formularioDatos, password: value })} fontSize={16} color={'white'} variant="underlined" InputLeftElement={<Icon as={<FontAwesomeIcon name="lock" style={styles.iconUser} />} size={2} />} p={2} placeholder="*******" secureTextEntry={true} />
                                     </Stack>
-                                    <Button onPress={() => doLogin()} backgroundColor={'white'} _text={{ color: '#01286B' }}>INGRESAR</Button>
+                                    {
+                                        !cargando ?
+                                            (<Button onPress={() => doLogin()} backgroundColor={'white'} _text={{ color: '#01286B' }}>Ingresar</Button>)
+                                            :
+                                            (<Button disabled={true} backgroundColor={'white'} _text={{ color: '#01286B' }}>
+                                                <ActivityIndicator size="small" color="#01286B"/>
+                                            </Button>)
+                                    }
+
                                 </Stack>
                             </FormControl>
                         </View>
@@ -109,7 +128,7 @@ const LoginScreen = () => {
                 </View>
                 <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end', marginRight: 30, marginBottom: 20 }}>
                     <Text style={{ color: "white", textAlign: 'center', fontSize: 11, fontFamily: 'Roboto', lineHeight: 12.89 }}>
-                        Versión 1.0
+                        Versión 2.0
                     </Text>
                 </View>
             </View>
@@ -136,10 +155,10 @@ const LoginScreen = () => {
                     hideAlert();
                 }}
             /> */}
-          
-            <SCLAlert
+
+            {/* <SCLAlert
                 show={show}
-                onRequestClose={()=>{handleClose()}}
+                onRequestClose={() => { handleClose() }}
                 theme="info"
                 title="Login"
                 subtitle="Ingreso exitoso"
@@ -149,9 +168,9 @@ const LoginScreen = () => {
                     console.log('Ingresé')
                     setShow(false);
                     navigation.navigate('Home')
-                   
+
                 }}>Continuar</SCLAlertButton>
-            </SCLAlert>
+            </SCLAlert> */}
 
         </ScrollView>
 

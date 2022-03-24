@@ -21,9 +21,6 @@ function MyStack() {
       headerShown: false,
     }
     }>
-      <Stack.Screen name="Resumen"
-        component={ScreenResumen}
-      />
       <Stack.Screen name="Login"
         component={LoginScreen}
       />
@@ -31,6 +28,9 @@ function MyStack() {
         component={Screen1} />
       <Stack.Screen name="Add"
         component={AddReporte} />
+      <Stack.Screen name="Resumen"
+        component={ScreenResumen}
+      />
       <Stack.Screen name="List"
         component={ListReportes} />
 
@@ -44,7 +44,7 @@ function MyStack() {
 
 
 export default function App() {
-  
+
   return (
     <AuthProvider>
       <NativeBaseProvider>

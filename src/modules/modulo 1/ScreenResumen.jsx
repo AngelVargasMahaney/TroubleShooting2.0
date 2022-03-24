@@ -17,8 +17,9 @@ import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
-const ScreenResumen = () => {
-
+const ScreenResumen = (props) => {
+  console.log("Soy el props del Screen Resumen")
+  console.log(props)
   const [estadoEdicion, setEstadoEdicion] = useState(true)
 
   // FAB
@@ -28,33 +29,52 @@ const ScreenResumen = () => {
 
 
 
-  const [formData, setData] = useState({});
+
+  const [formData, setData] = useState({
+    ...props.route.params.miObjeto
+  });
+
+  console.log("Soy la data del formulario del Screen Resumen:")
+  console.log(formData)
+
   const [botonH, setBotonH] = useState(false);
+  const fecha = (formData.date).getDate() + '/' + ((formData.date).getMonth() + 1) + '/' + (formData.date).getFullYear()
+  const hora = (formData.date).getHours() + ':' + (formData.date).getMinutes()
   return (
 
     <>
 
-      <TemplateScreen />
+      {
+        botonH ? <TemplateScreen setBotonH={setBotonH} /> : <TemplateScreenNoHeader setBotonH={setBotonH} />
+      }
 
 
       <View style={[styles.container]}>
 
-        <ScrollView >
+        <ScrollView style={{ marginBottom: 75 }} >
           <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
             <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-              <Text style={{ textAlign: 'center', color: '#01286B' }}>RESUMEN DE ""</Text>
+              <Text style={{ textAlign: 'center', color: '#01286B' }}>RESUMEN DE REPORTE REGISTRADO</Text>
             </View>
             <VStack width="100%" mx="3" maxW="300px" my="4">
               <FormControl>
-                <FormControl.Label _text={{
-                  bold: true
-                }}>Fecha y Hora</FormControl.Label>
-                <Input placeholder="Fecha y Hora"
-                  isDisabled={estadoEdicion}
-                  onChangeText={value => setData({
-                    ...formData,
-                    name: value
-                  })} />
+                <View style={{ flexDirection: 'row', marginBottom: 10 }}>
+                  <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
+                    bold: true
+                  }}>Fecha </FormControl.Label>
+
+                    <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{fecha}</Text>
+
+                  </View>
+                  <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
+                    bold: true
+                  }}>Hora </FormControl.Label>
+                    <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{hora}</Text>
+                  </View>
+
+
+                </View>
+
 
                 <FormControl.ErrorMessage _text={{
                   fontSize: 'xs'
@@ -66,7 +86,7 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Superintendente</FormControl.Label>
-                <Input placeholder="John"
+                <Input defaultValue={formData.superintendent} placeholder="John"
                   isDisabled={estadoEdicion}
                   onChangeText={value => setData({
                     ...formData,
@@ -76,7 +96,7 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Supervisor</FormControl.Label>
-                <Input placeholder="John"
+                <Input defaultValue={formData.supervisor} placeholder="John"
                   isDisabled={estadoEdicion} onChangeText={value => setData({
                     ...formData,
                     name: value
@@ -84,7 +104,7 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Operarios</FormControl.Label>
-                <Input placeholder="John"
+                <Input defaultValue={formData.operators} placeholder="John"
                   isDisabled={estadoEdicion}
                   onChangeText={value => setData({
                     ...formData,
@@ -94,7 +114,7 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Equipo Afectado</FormControl.Label>
-                <Input placeholder="John"
+                <Input defaultValue={formData.equipment_id} placeholder="John"
                   isDisabled={estadoEdicion}
                   onChangeText={value => setData({
                     ...formData,
@@ -111,7 +131,7 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Tiempo de Parada</FormControl.Label>
-                <Input placeholder="John"
+                <Input defaultValue={formData.downtime} placeholder="John"
                   isDisabled={estadoEdicion}
                   onChangeText={value => setData({
                     ...formData,
@@ -121,13 +141,13 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Detalle de parada</FormControl.Label>
-                <TextArea h={20} isDisabled={estadoEdicion}
+                <TextArea defaultValue={formData.details} h={20} isDisabled={estadoEdicion}
                   placeholder="Text Area Placeholder" w="100%" maxW="300" />
 
                 <FormControl.Label _text={{
                   bold: true
                 }}>Evento Ocurrido</FormControl.Label>
-                <Input placeholder="John"
+                <Input defaultValue={formData.event} placeholder="John"
                   isDisabled={estadoEdicion}
                   Text={value => setData({
                     ...formData,
@@ -141,11 +161,11 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Descripción del Evento</FormControl.Label>
-                <TextArea h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                <TextArea defaultValue={formData.description} h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
                 <FormControl.Label _text={{
                   bold: true
                 }}>Causas</FormControl.Label>
-                <Input placeholder="John"
+                <Input defaultValue={formData.attributed_cause} placeholder="John"
                   isDisabled={estadoEdicion}
                   onChangeText={value => setData({
                     ...formData,
@@ -155,7 +175,7 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Acciones realizadas</FormControl.Label>
-                <TextArea h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                <TextArea defaultValue={formData.take_actions} h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
 
                 <FormControl.ErrorMessage _text={{
                   fontSize: 'xs'
@@ -166,32 +186,38 @@ const ScreenResumen = () => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Resultados</FormControl.Label>
-                <TextArea h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                <TextArea defaultValue={formData.results} h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
 
-                <ScrollView horizontal>
-                  <View style={{ marginRight: 20 }}>
-                    <FormControl.Label _text={{
-                      bold: true
-                    }}>Evidencia N° 1</FormControl.Label>
+                <View style={[{ marginBottom: 35 }, styles.shadows]}>
+                  <ScrollView horizontal>
+                    <View style={{ flexDirection: 'row', margin: 10 }}>
+                      <View style={{ marginRight: 20 }}>
+                        <FormControl.Label _text={{
+                          bold: true
+                        }}>Evidencia N° 1</FormControl.Label>
 
-                    <View style={{
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 0,
-                        height: 3,
-                      },
-                      shadowOpacity: 0.2,
-                      shadowRadius: 4.65,
-                      elevation: 6,
-                      width: 200,
-                      height: 200,
-                      backgroundColor: 'rgba(255,255,255,0.5)',
-                      borderRadius: 7,
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                      {/* <View style={{ flexDirection: 'row' }}>
+                        <View style={{
+                          shadowColor: "#000",
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.2,
+                          shadowRadius: 4.65,
+                          elevation: 6,
+                          width: 200,
+                          height: 200,
+                          backgroundColor: 'rgba(255,255,255,0.5)',
+                          borderRadius: 7,
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+
+                          <Image
+                            source={{ uri: formData.foto1[0]?.base64 }}
+                            style={styles.image} />
+                          {/* <View style={{ flexDirection: 'row' }}>
                         <Pressable style={{ marginRight: 10 }}>
                           <Icon as={Ionicons} size={45} name="image-outline" />
                         </Pressable>
@@ -199,30 +225,33 @@ const ScreenResumen = () => {
                           <Icon as={Ionicons} size={45} name="camera-outline" />
                         </Pressable>
                       </View> */}
-                    </View>
-                  </View>
-                  <View style={{ marginLeft: 20 }}>
-                    <FormControl.Label _text={{
-                      bold: true
-                    }}>Evidencia N° 2</FormControl.Label>
-                    <View style={{
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 0,
-                        height: 3,
-                      },
-                      shadowOpacity: 0.2,
-                      shadowRadius: 4.65,
-                      elevation: 6,
-                      width: 200,
-                      height: 200,
-                      backgroundColor: 'rgba(255,255,255,0.5)',
-                      borderRadius: 7,
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                      {/* <View style={{ flexDirection: 'row' }}>
+                        </View>
+                      </View>
+                      <View style={{ marginLeft: 20 }}>
+                        <FormControl.Label _text={{
+                          bold: true
+                        }}>Evidencia N° 2</FormControl.Label>
+                        <View style={{
+                          shadowColor: "#000",
+                          shadowOffset: {
+                            width: 0,
+                            height: 3,
+                          },
+                          shadowOpacity: 0.2,
+                          shadowRadius: 4.65,
+                          elevation: 6,
+                          width: 200,
+                          height: 200,
+                          backgroundColor: 'rgba(255,255,255,0.5)',
+                          borderRadius: 7,
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                           <Image
+                            source={{ uri: formData.foto1[1]?.base64 }}
+                            style={styles.image} />
+                          {/* <View style={{ flexDirection: 'row' }}>
                         <Pressable style={{ marginRight: 10 }}>
                           <Icon as={Ionicons} size={45} name="image-outline" />
                         </Pressable>
@@ -230,10 +259,11 @@ const ScreenResumen = () => {
                           <Icon as={Ionicons} size={45} name="camera-outline" />
                         </Pressable>
                       </View> */}
+                        </View>
+                      </View>
                     </View>
-                  </View>
-                </ScrollView>
-
+                  </ScrollView>
+                </View>
               </FormControl>
             </VStack>
 
@@ -257,8 +287,18 @@ const ScreenResumen = () => {
         </ActionButton.Item>
 
       </ActionButton>
-      <View style={{ zIndex: -1 }}><TemplateScreenNoHeader /></View>
 
+      <View style={styles.containerFooter}>
+        <View style={{ width: 120, height: 120 }}>
+          <Image
+            source={require('../../../assets/backgrounds/Colors.png')} style={{
+              height: '100%',
+              width: '100%',
+              resizeMode: 'cover',
+
+            }} />
+        </View>
+      </View>
 
 
       {/* <Provider>
@@ -318,7 +358,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   container: {
-    marginTop: 130,
+
     marginBottom: 20,
     marginHorizontal: 20,
 
@@ -330,5 +370,20 @@ const styles = StyleSheet.create({
     height: 22,
     color: 'white',
   },
+  containerFooter: {
 
+    position: 'absolute',
+    zIndex: -1,
+    width: 150,
+    height: '100%',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-end',
+
+  },
+  image: {
+    width: '95%',
+    height: '97%',
+    resizeMode: 'cover',
+    position: 'absolute'
+  },
 })
