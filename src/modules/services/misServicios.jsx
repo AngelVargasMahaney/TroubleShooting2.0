@@ -30,3 +30,54 @@ export const getEquiment = async () => {
     })
     return rpta
 }
+
+//List Reportes
+
+export const getTroubleShooting = async () => {
+    const rpta = await authAxios.get(`${URL_BACKEND}/troubleshooting/getAll`, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    return rpta
+}
+export const getTroubleShootingById = async (id) => {
+    const rpta = await authAxios.get(`${URL_BACKEND}/troubleshooting/getEspecific/${id}`, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    return rpta
+}
+
+export const putTroubleshootingUpdate = async ( data, id) => {
+    const rpta = await authAxios.put(`${URL_BACKEND}/troubleshooting/update/${id}`,
+        JSON.stringify(data),
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        })
+    return rpta
+}
+
+export const deleteTroubleshootingById = async (id) => {
+
+    const rpta = authAxios.delete(`${URL_BACKEND}/troubleshooting/delete/${id}`, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    return rpta
+}
+
+//Search
+// Search
+export const getSearch = async (id, text) => {
+    const rpta = await authAxios.get(`${URL_BACKEND}/troubleshooting/getAll?type=${id}&text=${text}`, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    return rpta
+}
