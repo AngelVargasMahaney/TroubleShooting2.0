@@ -5,14 +5,14 @@ import { Box, Divider, HStack, Image, InfoIcon, Pressable, VStack } from 'native
 import { useNavigation } from '@react-navigation/native'
 import TemplateScreenNoHeader from '../../Template/TemplateScreenNoHeader'
 
-const Screen1 = () => {
+const Screen1 = (props) => {
     const navigation = useNavigation();
     const [botonH, setBotonH] = useState(true);
 
     return (
         <>
             {
-                botonH ? <TemplateScreen setBotonH={setBotonH} /> : <TemplateScreenNoHeader setBotonH={setBotonH} />
+                botonH ? <TemplateScreen miNombre={'Home'} setBotonH={setBotonH} /> : <TemplateScreenNoHeader setBotonH={setBotonH} />
             }
             <View style={styles.container}>
                 <Text>Elija alguna de estas opciones</Text>

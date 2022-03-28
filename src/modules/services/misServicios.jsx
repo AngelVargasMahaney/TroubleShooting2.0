@@ -2,7 +2,7 @@ import axios from "axios";
 import { URL_BACKEND } from "../environments/environments";
 import { authAxios } from "./axiosHelpers";
 
-export const postCreateData = async (data, token) => {
+export const postCreateData = async (data) => {
     const rpta = await authAxios.post(`${URL_BACKEND}/troubleshooting/create`,
         JSON.stringify(data),
         {
@@ -23,7 +23,7 @@ export const getSuperIntendent = async (id) => {
 }
 
 export const getEquiment = async () => {
-    const rpta = await axios.get(`${URL_BACKEND}/equipments/getAll`, {
+    const rpta = await authAxios.get(`${URL_BACKEND}/equipments/getAll`, {
         headers: {
             'Content-Type': 'application/json',
         }
@@ -31,6 +31,14 @@ export const getEquiment = async () => {
     return rpta
 }
 
+export const getEquimentById = async (id) => {
+    const rpta = await authAxios.get(`${URL_BACKEND}/equipments/getEspecific/${id}?all=1`, {
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    })
+    return rpta
+}
 //List Reportes
 
 export const getTroubleShooting = async () => {
@@ -50,7 +58,7 @@ export const getTroubleShootingById = async (id) => {
     return rpta
 }
 
-export const putTroubleshootingUpdate = async ( data, id) => {
+export const putTroubleshootingUpdate = async (data, id) => {
     const rpta = await authAxios.put(`${URL_BACKEND}/troubleshooting/update/${id}`,
         JSON.stringify(data),
         {

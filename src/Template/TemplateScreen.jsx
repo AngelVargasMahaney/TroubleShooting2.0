@@ -2,16 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Animated } from 'react-native'
 import { Ionicons } from '@expo/vector-icons';
 import { Icon, Image, Menu, Pressable, HamburgerIcon, Box } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
 import { Avatar, MenuItem, OverflowMenu, TopNavigation, TopNavigationAction } from '@ui-kitten/components';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useNavigation } from '@react-navigation/native';
 
 const TemplateScreen = (props) => {
-    console.log(props)
+    
     const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
-    
+
 
     useEffect(() => {
         Animated.timing(
@@ -38,10 +38,10 @@ const TemplateScreen = (props) => {
             await AsyncStorage.removeItem('token')
             navigation.navigate('Login')
         } catch (e) {
-             console.log(e)
+            console.log(e)
         }
 
-         console.log('Done.')
+        console.log('Done.')
     }
     const MenuIcon = (props) => (
         <Icon as={Ionicons} size={5} name='ellipsis-vertical' />
@@ -75,14 +75,14 @@ const TemplateScreen = (props) => {
                 visible={menuVisible}
                 onBackdropPress={toggleMenu}
             >
-                <MenuItem accessoryLeft={LogoutIcon} title='Logout' onPress={() => { cerrarSesion()}} />
+                <MenuItem accessoryLeft={LogoutIcon} title='Logout' onPress={() => { cerrarSesion() }} />
                 <MenuItem accessoryLeft={OcultarIcon} title='Ocultar Header' onPress={() => { props.setBotonH(false) }} />
             </OverflowMenu>
 
         </React.Fragment>
     );
     const renderTitle = (props) => (
-        <View style={styles.titleContainer}>
+        <View style={styles.titleContainer} >
             <Text style={styles.rutOp}>TROUBLESHOOTING</Text>
         </View>
     );
@@ -91,7 +91,7 @@ const TemplateScreen = (props) => {
         <>
             <Animated.View                 // Special animatable View
                 style={{
-                  
+
                     flexDirection: "column",
                     opacity: fadeAnim,         // Bind opacity to animated value
                 }}
@@ -100,6 +100,7 @@ const TemplateScreen = (props) => {
                     style={{ backgroundColor: '#f0f2f0' }}
                     title={renderTitle}
                     accessoryRight={renderOverflowMenuAction}
+                    accessoryLeft={ props.miNombre == 'Home' ? null : <Pressable onPress={() => navigation.navigate('Home')}><Icon style={{ marginTop: 20, marginRight: -10 }} as={Ionicons} size={7} name="arrow-back-circle-outline" color={'#01286B'} /></Pressable>}
                 />
             </Animated.View>
         </>

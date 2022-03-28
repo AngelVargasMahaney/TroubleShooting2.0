@@ -31,8 +31,7 @@ const AddReporte = () => {
         take_actions: '',
         results: '',
         equipment_id: '',
-        attachments: '',
-        foto1: []
+        attachments: []
     })
     const [botonH, setBotonH] = useState(false);
     const [superIntendente, setSuperIntendente] = useState([])
@@ -136,7 +135,7 @@ const AddReporte = () => {
             const source = { uri: 'data:image/jpeg;base64,' + result.base64 };
             // console.warn(source.uri);
             dataFoto.base64 = source.uri
-            miObjeto.foto1[0] = dataFoto
+            miObjeto.attachments[0] = dataFoto
         }
     }
     const showImagePicker2 = async () => {
@@ -158,7 +157,7 @@ const AddReporte = () => {
             const source = { uri: 'data:image/jpeg;base64,' + result.base64 };
             // console.warn(source.uri);
             dataFoto2.base64 = source.uri
-            miObjeto.foto1[1] = dataFoto2
+            miObjeto.attachments[1] = dataFoto2
         }
     }
     const [isImageViewVisible, setisImageViewVisible] = useState(false);
@@ -234,21 +233,21 @@ const AddReporte = () => {
                                                 }}>Superintendente <Pressable onPress={() => setModalBuscarSuperIntendente(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable> </FormControl.Label>
 
 
-                                                <Input defaultValue={miValorModalSuperIntendente} placeholder="Juan Ramírez Choque" onChangeText={value => setMiObjeto({
+                                                <Input defaultValue={miObjeto.superintendent} placeholder="Juan Ramírez Choque" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     superintendent: value
                                                 })} />
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Supervisor</FormControl.Label>
-                                                <Input placeholder="Mariana Tapia" onChangeText={value => setMiObjeto({
+                                                <Input defaultValue={miObjeto.supervisor} placeholder="Mariana Tapia" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     supervisor: value
                                                 })} />
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Operarios</FormControl.Label>
-                                                <Input placeholder="César Solórzano" onChangeText={value => setMiObjeto({
+                                                <Input defaultValue={miObjeto.operators} placeholder="César Solórzano" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     operators: value
                                                 })} />
@@ -270,7 +269,7 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Equipo Afectado <Pressable onPress={() => setModalBuscarEquipos(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable></FormControl.Label>
-                                                <Input defaultValue={miValorModalEquipos} placeholder="Molino SAG" onChangeText={value => setMiObjeto({
+                                                <Input editable={false} defaultValue={inputEquipos?.name} placeholder="Molino SAG" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     equipment_id: value
                                                 })} />
@@ -291,7 +290,7 @@ const AddReporte = () => {
                                                     md: "285"
                                                 }}>
 
-                                                    <Input w={{
+                                                    <Input defaultValue={miObjeto.downtime} w={{
                                                         base: "50%",
                                                     }} keyboardType='numeric' placeholder="0.5" onChangeText={value => setMiObjeto({
                                                         ...miObjeto,
@@ -303,7 +302,7 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Detalle de parada</FormControl.Label>
-                                                <TextArea h={20} placeholder="El Molino SAG se detuvo durante desde las 10:30 hrs hasta las 11:00 hrs, debido a ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                <TextArea defaultValue={miObjeto.details} h={20} placeholder="El Molino SAG se detuvo durante desde las 10:30 hrs hasta las 11:00 hrs, debido a ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     details: value
                                                 })} />
@@ -328,7 +327,7 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Nombre del Evento Ocurrido</FormControl.Label>
-                                                <Input placeholder="Parada del Molino SAG" onChangeText={value => setMiObjeto({
+                                                <Input defaultValue={miObjeto.event} placeholder="Parada del Molino SAG" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     event: value
                                                 })} />
@@ -340,14 +339,14 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Descripción del Evento</FormControl.Label>
-                                                <TextArea h={20} placeholder="A las 10:30 hrs se detuvo el Molino SAG para realizar el mantenimiento correspondiente ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                <TextArea defaultValue={miObjeto.description} h={20} placeholder="A las 10:30 hrs se detuvo el Molino SAG para realizar el mantenimiento correspondiente ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     description: value
                                                 })} />
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Causa del Evento</FormControl.Label>
-                                                <TextArea h={20} placeholder="Se realizó el mantenimiento respectivo según ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                <TextArea defaultValue={miObjeto.attributed_cause} h={20} placeholder="Se realizó el mantenimiento respectivo según ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     attributed_cause: value
                                                 })} />
@@ -370,7 +369,7 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Acciones realizadas</FormControl.Label>
-                                                <TextArea h={20} placeholder="1. Revisión de Componentes del Molino ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                <TextArea defaultValue={miObjeto.take_actions} h={20} placeholder="1. Revisión de Componentes del Molino ..." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     take_actions: value
                                                 })} />
@@ -386,7 +385,7 @@ const AddReporte = () => {
                                                 <FormControl.Label _text={{
                                                     bold: true
                                                 }}>Resultados</FormControl.Label>
-                                                <TextArea h={20} placeholder="La revisión se realizó correctamente, solucionando todos los problemas encontrados." w="100%" maxW="300" onChangeText={value => setMiObjeto({
+                                                <TextArea defaultValue={miObjeto.results} h={20} placeholder="La revisión se realizó correctamente, solucionando todos los problemas encontrados." w="100%" maxW="300" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     results: value
                                                 })} />
@@ -436,21 +435,21 @@ const AddReporte = () => {
                                                     alignItems: 'center',
                                                 }}>
                                                     {
-                     
-                                                            <Image
 
-                                                                source={pickedImagePath == '' ? require('../../../assets/logos/Logo_Antapaccay.png') : ({ uri: pickedImagePath }) }
-                                                                style={pickedImagePath == '' ? styles.image2 : styles.image}
-                                                            />
-                                                       
+                                                        <Image
+
+                                                            source={pickedImagePath == '' ? require('../../../assets/logos/Logo_Antapaccay.png') : ({ uri: pickedImagePath })}
+                                                            style={pickedImagePath == '' ? styles.image2 : styles.image}
+                                                        />
+
                                                     }
                                                     <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
                                                         <Pressable onPress={showImagePicker} style={{ marginRight: 10 }}>
                                                             <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable>
-                                                        <Pressable style={{ marginLeft: 10 }}>
+                                                        {/* <Pressable style={{ marginLeft: 10 }}>
                                                             <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
-                                                        </Pressable>
+                                                        </Pressable> */}
                                                         <Pressable onPress={() => setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
                                                             <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable>
@@ -481,28 +480,28 @@ const AddReporte = () => {
                                                     alignItems: 'center',
                                                 }}>
                                                     {
-                     
-                                                            <Image
 
-                                                                source={pickedImagePath2 == '' ? require('../../../assets/logos/Logo_Antapaccay.png') : ({ uri: pickedImagePath2 }) }
-                                                                style={pickedImagePath2 == '' ? styles.image2 : styles.image}
-                                                            />
-                                                       
+                                                        <Image
+
+                                                            source={pickedImagePath2 == '' ? require('../../../assets/logos/Logo_Antapaccay.png') : ({ uri: pickedImagePath2 })}
+                                                            style={pickedImagePath2 == '' ? styles.image2 : styles.image}
+                                                        />
+
                                                     }
                                                     <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
                                                         <Pressable onPress={showImagePicker2} style={{ marginRight: 10 }}>
                                                             <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable>
-                                                        <Pressable style={{ marginLeft: 10 }}>
+                                                        {/* <Pressable style={{ marginLeft: 10 }}>
                                                             <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
-                                                        </Pressable>
+                                                        </Pressable> */}
                                                         <Pressable onPress={() => setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
                                                             <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable>
                                                     </View>
                                                 </View>
                                             </View>
-                                          
+
 
                                         </FormControl>
                                     </ScrollView>
@@ -594,7 +593,6 @@ const AddReporte = () => {
                         //To remove the underline from the android input
                         />
 
-
                     </View>
                     <View style={{ marginTop: 20, marginBottom: 10 }}>
                         <Text style={{ textAlign: 'left', borderTopWidth: 1, paddingTop: 5, fontWeight: 'bold' }}>Nombre de Superintendente</Text>
@@ -683,13 +681,22 @@ const AddReporte = () => {
                         onPress={() => {
                             setModalBuscarEquipos(false)
                             setMiValorModalEquipos(inputEquipos?.name)
-                            miObjeto.equipment_id = inputEquipos?.name
+                            miObjeto.equipment_id = inputEquipos?.id
                         }}
                         accessoryRight={<Icon as={Ionicons} size={5} name='search' color={'white'} />}>
                         Registrar campo
                     </Button>
                 </Card>
             </Modal>
+            <ImageView
+                isSwipeCloseEnabled={true}
+                onClose={() => setisImageViewVisible(false)}
+                images={images}
+                imageIndex={0}
+                isPinchZoomEnabled={true}
+                isVisible={isImageViewVisible}
+
+            />
         </>
     )
 }
@@ -722,7 +729,7 @@ const styles = StyleSheet.create({
         resizeMode: 'cover',
         position: 'absolute'
     },
-    image2:{
+    image2: {
         width: '92%',
         height: '97%',
         resizeMode: 'contain',
