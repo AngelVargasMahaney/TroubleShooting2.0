@@ -91,7 +91,8 @@ const AddReporte = () => {
     const showTimepicker = () => {
         showMode('time');
     };
-    //////////////////////////////////
+    
+
 
     const [pickedImagePath, setPickedImagePath] = useState('');
     const [pickedImagePath2, setPickedImagePath2] = useState('');

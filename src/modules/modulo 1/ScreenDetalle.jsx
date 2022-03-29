@@ -2,10 +2,10 @@ import { StyleSheet, Text, View, useWindowDimensions, Image, ScrollView, Activit
 import React, { useState, useEffect } from 'react'
 import TemplateScreen from '../../Template/TemplateScreen'
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import { FormControl, Input, VStack, Pressable, TextArea, FlatList, HStack, Skeleton } from 'native-base';
+import { FormControl, Input, VStack, Pressable, TextArea, FlatList, HStack, Skeleton, InputGroup, InputRightAddon, useToast } from 'native-base';
 import TemplateScreenNoHeader from '../../Template/TemplateScreenNoHeader';
 import { Ionicons } from '@expo/vector-icons';
-import { getEquiment, getEquimentById, getSuperIntendent, postCreateData } from '../services/misServicios';
+import { getEquimentById, getTroubleShootingById, putTroubleshootingUpdate } from '../services/misServicios';
 import SearchableDropDown from 'react-native-searchable-dropdown';
 import { Card, Modal, Button } from '@ui-kitten/components';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -19,9 +19,8 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
 
 
-const ScreenResumen = (props) => {
-  console.log("Soy el props del Screen Resumen")
-  console.log(props)
+const ScreenDetalle = (props) => {
+
   const [estadoEdicion, setEstadoEdicion] = useState(true)
 
   // FAB
@@ -30,62 +29,90 @@ const ScreenResumen = (props) => {
   const { open } = state;
   const [skeletonLoader, setSkeletonLoader] = useState(false)
 
+  const toast = useToast();
+useEffect(() => {
+  setTimeout(() => {
+    setSkeletonLoader(true);
+  }, 2800);
+})
 
 
-  const [formData, setData] = useState({
-    ...props.route.params.miObjeto,
-  });
+  //OBTERNER DATA POR ID
+  const [formData, setData] = useState();
+  const getDataByID = () => {
+    
+    const idUrl = props.route.params.id;
+    getTroubleShootingById(idUrl).then(rpta => {
+     
+      setData(rpta.data.data)
+      buscarEquipoId(rpta.data.data.equipment_id)
+    })
+  }
+
+  console.log('mi data')
+  console.log(formData)
+  //GUARDAR CAMBIOS
+  const handleSubmit = () => {
+
+    putTroubleshootingUpdate(formData, props.route.params.id).then((rpta) => {
+
+      if (rpta.status === 200) {
+        console.warn("Subida extitosa")
+        navigation.goBack()
+      } else {
+        console.warn("Subida errónea")
+
+      }
+    }).catch(err => {
+      console.log("ERROR EN EL SERVICIO CREARDATA")
+      console.warn(err)
+    })
+  }
 
   const [cargando, setCargando] = useState(false)
-  console.log("Soy la data del formulario del Screen Resumen:")
-  console.log(formData.attachments)
 
   const [botonH, setBotonH] = useState(false);
-  const fecha = (formData.date).getDate() + '/' + ((formData.date).getMonth() + 1) + '/' + (formData.date).getFullYear()
-  const hora = (formData.date).getHours() + ':' + (formData.date).getMinutes()
+  // title
+  var titleEvent = formData?.event
+  //Fecha
+  var fechaDetalle = new Date(formData?.date)
+
+  const fecha = fechaDetalle.getDate() + '/' + (fechaDetalle.getMonth() + 1) + '/' + fechaDetalle.getFullYear()
+  const hora = fechaDetalle.getHours() + ':' + fechaDetalle.getMinutes()
+
+
   const [visible, setVisible] = useState(false);
 
-  const [show, setShow] = useState(false)
 
+  //Alerta
+  const [show, setShow] = useState(false)
+  //Servicio Alerta
   const handleOpen = () => {
     setShow(true)
   }
-
   const handleClose = () => {
     setShow(false)
   }
-  const guardarData = () => {
-    postCreateData(formData).then((rpta) => {
-      if (rpta.status === 200) {
-        console.log("BIEN HECHO")
-        handleOpen()
-      } else {
-        console.log('Error')
-      }
-    }).catch((err) => {
-      console.log(err)
-    })
-  }
-  // setTimeout(() => {
-  //   setSkeletonLoader(true);
-  // }, 2500);
-  const [miEquipo, setMiEquipo] = useState('')
-  const buscarEquipoId = () => {
 
-    getEquimentById(formData.equipment_id).then((rpta) => {
+  //EQUIPO POR ID
+  const [miEquipo, setMiEquipo] = useState('')
+  const buscarEquipoId = (id) => {    
+    getEquimentById(id).then((rpta) => {
       if (rpta.status === 200) {
-        
-        console.log(rpta.data.data.name)
+       
         setMiEquipo(rpta.data.data.name)
+        
       }
-      setSkeletonLoader(true)
+
     })
   }
+
   useEffect(() => {
-    buscarEquipoId()
+    getDataByID()
+    
   }, [])
+
   useEffect(() => {
-    console.log(skeletonLoader)
   })
 
   const navigation = useNavigation()
@@ -103,7 +130,7 @@ const ScreenResumen = (props) => {
         <ScrollView style={{ marginBottom: 75 }} >
           <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
             <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-              <Text style={{ textAlign: 'center', color: '#01286B' }}>RESUMEN DE REPORTE REGISTRADO</Text>
+              <Text style={{ textAlign: 'center', color: '#01286B', fontSize: 18}}>{titleEvent?.toUpperCase()}</Text>
             </View>
 
 
@@ -142,7 +169,7 @@ const ScreenResumen = (props) => {
                   bold: true
                 }}>Superintendente</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
-                  <Input defaultValue={formData.superintendent} placeholder="John"
+                  <Input defaultValue={formData?.superintendent} placeholder="John"
                     isDisabled={estadoEdicion}
                     onChangeText={value => setData({
                       ...formData,
@@ -154,7 +181,7 @@ const ScreenResumen = (props) => {
                   bold: true
                 }}>Supervisor</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
-                  <Input defaultValue={formData.supervisor} placeholder="John"
+                  <Input defaultValue={formData?.supervisor} placeholder="John"
                     isDisabled={estadoEdicion} onChangeText={value => setData({
                       ...formData,
                       name: value
@@ -165,7 +192,7 @@ const ScreenResumen = (props) => {
                 }}>Operarios</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <Input defaultValue={formData.operators} placeholder="John"
+                  <Input defaultValue={formData?.operators} placeholder="John"
                     isDisabled={estadoEdicion}
                     onChangeText={value => setData({
                       ...formData,
@@ -179,7 +206,8 @@ const ScreenResumen = (props) => {
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
                   <Input defaultValue={miEquipo} placeholder="John"
-                    isDisabled={estadoEdicion}
+                    // isDisabled={estadoEdicion}
+                    isDisabled={true}
                     onChangeText={value => setData({
                       ...formData,
                       name: value
@@ -198,12 +226,26 @@ const ScreenResumen = (props) => {
                 }}>Tiempo de Parada</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <Input defaultValue={formData?.downtime} placeholder="John"
-                    isDisabled={estadoEdicion}
-                    onChangeText={value => setData({
-                      ...formData,
-                      name: value
-                    })} />
+                  <InputGroup w={{
+                    base: "70%",
+                    md: "285"
+                  }}>
+                    <Input w={{
+                      base: "50%",
+                    }}
+                      defaultValue={formData?.downtime + ""}
+                      keyboardType='numeric'
+                      placeholder="0.5"
+                      isDisabled={estadoEdicion}
+                      onChangeText={value => setData({
+                        ...formData,
+                        name: value
+                      })} />
+
+                    <InputRightAddon children={"hrs"} />
+                  </InputGroup>
+
+
                 </Skeleton.Text>
 
                 <FormControl.Label _text={{
@@ -211,7 +253,9 @@ const ScreenResumen = (props) => {
                 }}>Detalle de parada</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <TextArea defaultValue={formData.details} h={20} isDisabled={estadoEdicion}
+                  <TextArea defaultValue={formData?.details} h={20}
+                  
+                  isDisabled={estadoEdicion}
                     placeholder="Text Area Placeholder" w="100%" maxW="300" />
                 </Skeleton.Text>
 
@@ -220,7 +264,7 @@ const ScreenResumen = (props) => {
                 }}>Evento Ocurrido</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <Input defaultValue={formData.event} placeholder="John"
+                  <Input defaultValue={formData?.event} placeholder="John"
                     isDisabled={estadoEdicion}
                     Text={value => setData({
                       ...formData,
@@ -236,15 +280,15 @@ const ScreenResumen = (props) => {
                   bold: true
                 }}>Descripción del Evento</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
-
-                  <TextArea defaultValue={formData.description} h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                  <TextArea defaultValue={formData?.description+""} h={20} 
+                  isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
                 </Skeleton.Text>
                 <FormControl.Label _text={{
                   bold: true
                 }}>Causas</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <TextArea defaultValue={formData.attributed_cause} placeholder="John"
+                  <TextArea defaultValue={formData?.attributed_cause} placeholder="John"
                     isDisabled={estadoEdicion}
                     onChangeText={value => setData({
                       ...formData,
@@ -257,7 +301,11 @@ const ScreenResumen = (props) => {
                 }}>Acciones realizadas</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <TextArea defaultValue={formData.take_actions} h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                  <TextArea defaultValue={formData?.take_actions} 
+                  
+                  h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" 
+                  multiline={true}
+                  w="100%" maxW="300" />
                 </Skeleton.Text>
 
                 <FormControl.ErrorMessage _text={{
@@ -271,7 +319,7 @@ const ScreenResumen = (props) => {
                 }}>Resultados</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <TextArea defaultValue={formData.results} h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                  <TextArea defaultValue={formData?.results} h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
                 </Skeleton.Text>
 
                 <View style={[{ marginBottom: 35 }, styles.shadows]}>
@@ -301,7 +349,7 @@ const ScreenResumen = (props) => {
                         }}>
                           <Skeleton h="100%" isLoaded={skeletonLoader}>
                             <Image
-                              source={{ uri: formData.attachments[0]?.base64 }}
+                              source={{ uri: formData?.attachments[0].url }}
                               style={styles.image} />
                           </Skeleton>
                           {/* <View style={{ flexDirection: 'row' }}>
@@ -337,7 +385,7 @@ const ScreenResumen = (props) => {
                         }}>
                           <Skeleton h="100%" isLoaded={skeletonLoader}>
                             <Image
-                              source={{ uri: formData.attachments[1]?.base64 }}
+                              source={{ uri: formData?.attachments[1].url }}
                               style={styles.image} />
                           </Skeleton>
                           {/* <View style={{ flexDirection: 'row' }}>
@@ -366,17 +414,43 @@ const ScreenResumen = (props) => {
 
       </View>
       <ActionButton buttonColor="#01286B">
-        <ActionButton.Item buttonColor='#f78b8b' title="Cancelar" onPress={() => navigation.navigate('Home')}>
+        {/* <ActionButton.Item buttonColor='#f78b8b' title="Cancelar" onPress={() => navigation.navigate('Home')}>
           <Icon name="md-close" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
+        </ActionButton.Item> */}
 
-        <ActionButton.Item buttonColor='#3498db' title="Volver a Edición" onPress={() => { navigation.goBack() }}>
-          <Icon name="md-pencil" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
+        {
+          estadoEdicion ? <ActionButton.Item buttonColor='#3498db' title="Editar Registro" onPress={() => { setEstadoEdicion(false) }}>
+            <Icon name="md-pencil" style={styles.actionButtonIcon} />
+          </ActionButton.Item> :
+            <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() =>toast.show({
+              description: "Ya estas en modo Edición"
+          })} _dark={{
+              bg: "coolGray.800"
+          }} _light={{
+              bg: "white"
+          }}>
+              <Icon name="md-pencil" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+        }
 
-        <ActionButton.Item buttonColor='#1abc9c' title="Guardar" onPress={() => { guardarData() }}>
-          <Icon name="md-save" style={styles.actionButtonIcon} />
-        </ActionButton.Item>
+
+
+        {
+          estadoEdicion ?
+            <ActionButton.Item buttonColor='#1abc9c' title="Elige editar primero" onPress={() =>toast.show({
+              description: "Primero entra en el modo Edición"
+          })} _dark={{
+              bg: "coolGray.800"
+          }} _light={{
+              bg: "white"
+          }}>
+              <Icon name="md-save" style={styles.actionButtonIcon} />
+            </ActionButton.Item> :
+            <ActionButton.Item buttonColor='#1abc9c' title="Guardar Cambios" onPress={() => { handleSubmit() }}>
+              <Icon name="md-save" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+        }
+
 
       </ActionButton>
 
@@ -401,7 +475,7 @@ const ScreenResumen = (props) => {
         headerIconComponent={<Ionicons name="ios-thumbs-up" size={32} color="white" />}
       >
         <SCLAlertButton theme="info" onPress={() => {
-          console.log('Ingresé')
+        
           setShow(false);
           navigation.navigate('Home')
 
@@ -453,7 +527,7 @@ const ScreenResumen = (props) => {
   )
 }
 
-export default ScreenResumen
+export default ScreenDetalle
 
 const styles = StyleSheet.create({
   containerFooter: {
