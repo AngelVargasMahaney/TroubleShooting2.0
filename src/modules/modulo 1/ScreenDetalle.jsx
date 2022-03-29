@@ -30,20 +30,20 @@ const ScreenDetalle = (props) => {
   const [skeletonLoader, setSkeletonLoader] = useState(false)
 
   const toast = useToast();
-useEffect(() => {
-  setTimeout(() => {
-    setSkeletonLoader(true);
-  }, 2800);
-})
+  useEffect(() => {
+    setTimeout(() => {
+      setSkeletonLoader(true);
+    }, 2800);
+  })
 
 
   //OBTERNER DATA POR ID
   const [formData, setData] = useState();
   const getDataByID = () => {
-    
+
     const idUrl = props.route.params.id;
     getTroubleShootingById(idUrl).then(rpta => {
-     
+
       setData(rpta.data.data)
       buscarEquipoId(rpta.data.data.equipment_id)
     })
@@ -96,12 +96,12 @@ useEffect(() => {
 
   //EQUIPO POR ID
   const [miEquipo, setMiEquipo] = useState('')
-  const buscarEquipoId = (id) => {    
+  const buscarEquipoId = (id) => {
     getEquimentById(id).then((rpta) => {
       if (rpta.status === 200) {
-       
+
         setMiEquipo(rpta.data.data.name)
-        
+
       }
 
     })
@@ -109,7 +109,7 @@ useEffect(() => {
 
   useEffect(() => {
     getDataByID()
-    
+
   }, [])
 
   useEffect(() => {
@@ -130,7 +130,7 @@ useEffect(() => {
         <ScrollView style={{ marginBottom: 75 }} >
           <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
             <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-              <Text style={{ textAlign: 'center', color: '#01286B', fontSize: 18}}>{titleEvent?.toUpperCase()}</Text>
+              <Text style={{ textAlign: 'center', color: '#01286B', fontSize: 18 }}>{titleEvent?.toUpperCase()}</Text>
             </View>
 
 
@@ -254,8 +254,8 @@ useEffect(() => {
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
                   <TextArea defaultValue={formData?.details} h={20}
-                  
-                  isDisabled={estadoEdicion}
+
+                    isDisabled={estadoEdicion}
                     placeholder="Text Area Placeholder" w="100%" maxW="300" />
                 </Skeleton.Text>
 
@@ -280,8 +280,8 @@ useEffect(() => {
                   bold: true
                 }}>Descripción del Evento</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
-                  <TextArea defaultValue={formData?.description+""} h={20} 
-                  isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                  <TextArea defaultValue={formData?.description + ""} h={20}
+                    isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
                 </Skeleton.Text>
                 <FormControl.Label _text={{
                   bold: true
@@ -301,11 +301,11 @@ useEffect(() => {
                 }}>Acciones realizadas</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <TextArea defaultValue={formData?.take_actions} 
-                  
-                  h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" 
-                  multiline={true}
-                  w="100%" maxW="300" />
+                  <TextArea defaultValue={formData?.take_actions}
+
+                    h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder"
+                    multiline={true}
+                    w="100%" maxW="300" />
                 </Skeleton.Text>
 
                 <FormControl.ErrorMessage _text={{
@@ -414,36 +414,41 @@ useEffect(() => {
 
       </View>
       <ActionButton buttonColor="#01286B">
-        {/* <ActionButton.Item buttonColor='#f78b8b' title="Cancelar" onPress={() => navigation.navigate('Home')}>
-          <Icon name="md-close" style={styles.actionButtonIcon} />
-        </ActionButton.Item> */}
 
         {
-          estadoEdicion ? <ActionButton.Item buttonColor='#3498db' title="Editar Registro" onPress={() => { setEstadoEdicion(false) }}>
+          estadoEdicion ? <ActionButton.Item buttonColor='#3498db' title="Editar Registro"
+            onPress={() => {
+              setEstadoEdicion(false);
+              toast.show({
+                description: "Modo Edición"
+              })
+            }} _dark={{
+              bg: "coolGray.800"
+            }} _light={{
+              bg: "white"            
+              }}>
             <Icon name="md-pencil" style={styles.actionButtonIcon} />
           </ActionButton.Item> :
-            <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() =>toast.show({
+            <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() => toast.show({
               description: "Ya estas en modo Edición"
-          })} _dark={{
+            })} _dark={{
               bg: "coolGray.800"
-          }} _light={{
+            }} _light={{
               bg: "white"
-          }}>
+            }}>
               <Icon name="md-pencil" style={styles.actionButtonIcon} />
             </ActionButton.Item>
         }
 
-
-
         {
           estadoEdicion ?
-            <ActionButton.Item buttonColor='#1abc9c' title="Elige editar primero" onPress={() =>toast.show({
+            <ActionButton.Item buttonColor='#1abc9c' title="Elige editar primero" onPress={() => toast.show({
               description: "Primero entra en el modo Edición"
-          })} _dark={{
+            })} _dark={{
               bg: "coolGray.800"
-          }} _light={{
+            }} _light={{
               bg: "white"
-          }}>
+            }}>
               <Icon name="md-save" style={styles.actionButtonIcon} />
             </ActionButton.Item> :
             <ActionButton.Item buttonColor='#1abc9c' title="Guardar Cambios" onPress={() => { handleSubmit() }}>
@@ -475,53 +480,12 @@ useEffect(() => {
         headerIconComponent={<Ionicons name="ios-thumbs-up" size={32} color="white" />}
       >
         <SCLAlertButton theme="info" onPress={() => {
-        
+
           setShow(false);
           navigation.navigate('Home')
 
         }}>Continuar</SCLAlertButton>
       </SCLAlert>
-      {/* <Provider>
-        <Portal >
-          <FAB.Group
-            open={open}
-            color="white"
-      
-            icon={open ? 'nut' : 'plus'}
-            actions={[
-              {
-                icon: 'cancel',
-                label: 'Cancelar Registro',
-                onPress: () => console.log('Pressed star'),
-              },
-              {
-                icon: 'pencil',
-                label: 'Volver a Edición',
-                onPress: () => console.log('Pressed email'),
-              },
-              {
-                icon: 'content-save',
-                label: 'Guardar',
-                onPress: () => console.log('Pressed notifications'),
-                small: false,
-              },
-            ]}
-            onStateChange={onStateChange}
-            onPress={() => {
-              if (open) {
-                // do something if the speed dial is open
-              }
-            }}
-          />
-        </Portal>
-      </Provider> */}
-      {/* {
-        botonH ? (<View style={styles.containerFooter}>
-            <Image
-                source={require('../../../assets/backgrounds/Colors.png')} alt="Alternate Text" size="xl" />
-
-        </View>) : null
-    } */}
 
     </>
   )
