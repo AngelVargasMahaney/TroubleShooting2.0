@@ -49,6 +49,8 @@ const ScreenDetalle = (props) => {
     })
   }
 
+
+
   console.log('mi data')
   console.log(formData)
   //GUARDAR CAMBIOS
@@ -106,7 +108,9 @@ const ScreenDetalle = (props) => {
 
     })
   }
-
+  const handleChangeText = (nombre, value) => {
+    setData({ ...formData, [nombre]: value })
+  };
   useEffect(() => {
     getDataByID()
 
@@ -171,10 +175,7 @@ const ScreenDetalle = (props) => {
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
                   <Input defaultValue={formData?.superintendent} placeholder="John"
                     isDisabled={estadoEdicion}
-                    onChangeText={value => setData({
-                      ...formData,
-                      name: value
-                    })} />
+                    onChangeText={(value) => handleChangeText('superintendent', value)} />
                 </Skeleton.Text>
 
                 <FormControl.Label _text={{
@@ -182,10 +183,8 @@ const ScreenDetalle = (props) => {
                 }}>Supervisor</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
                   <Input defaultValue={formData?.supervisor} placeholder="John"
-                    isDisabled={estadoEdicion} onChangeText={value => setData({
-                      ...formData,
-                      name: value
-                    })} />
+                    isDisabled={estadoEdicion}
+                    onChangeText={(value) => handleChangeText('supervisor', value)} />
                 </Skeleton.Text>
                 <FormControl.Label _text={{
                   bold: true
@@ -194,10 +193,7 @@ const ScreenDetalle = (props) => {
 
                   <Input defaultValue={formData?.operators} placeholder="John"
                     isDisabled={estadoEdicion}
-                    onChangeText={value => setData({
-                      ...formData,
-                      name: value
-                    })} />
+                    onChangeText={(value) => handleChangeText('operators', value)} />
                 </Skeleton.Text>
 
                 <FormControl.Label _text={{
@@ -208,10 +204,8 @@ const ScreenDetalle = (props) => {
                   <Input defaultValue={miEquipo} placeholder="John"
                     // isDisabled={estadoEdicion}
                     isDisabled={true}
-                    onChangeText={value => setData({
-                      ...formData,
-                      name: value
-                    })} />
+                  //Aqui falta un modal para cambiar de equipo
+                  />
                 </Skeleton.Text>
 
                 <FormControl.ErrorMessage _text={{
@@ -237,10 +231,7 @@ const ScreenDetalle = (props) => {
                       keyboardType='numeric'
                       placeholder="0.5"
                       isDisabled={estadoEdicion}
-                      onChangeText={value => setData({
-                        ...formData,
-                        name: value
-                      })} />
+                      onChangeText={(value) => handleChangeText('downtime', value)} />
 
                     <InputRightAddon children={"hrs"} />
                   </InputGroup>
@@ -254,7 +245,7 @@ const ScreenDetalle = (props) => {
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
                   <TextArea defaultValue={formData?.details} h={20}
-
+                    onChangeText={(value) => handleChangeText('details', value)}
                     isDisabled={estadoEdicion}
                     placeholder="Text Area Placeholder" w="100%" maxW="300" />
                 </Skeleton.Text>
@@ -266,10 +257,7 @@ const ScreenDetalle = (props) => {
 
                   <Input defaultValue={formData?.event} placeholder="John"
                     isDisabled={estadoEdicion}
-                    Text={value => setData({
-                      ...formData,
-                      name: value
-                    })} />
+                    onChangeText={(value) => handleChangeText('event', value)} />
                 </Skeleton.Text>
                 <FormControl.ErrorMessage _text={{
                   fontSize: 'xs'
@@ -281,7 +269,10 @@ const ScreenDetalle = (props) => {
                 }}>Descripción del Evento</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
                   <TextArea defaultValue={formData?.description + ""} h={20}
-                    isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                    isDisabled={estadoEdicion}
+                    placeholder="Text Area Placeholder" w="100%" maxW="300"
+                    onChangeText={(value) => handleChangeText('description', value)}
+                  />
                 </Skeleton.Text>
                 <FormControl.Label _text={{
                   bold: true
@@ -290,10 +281,7 @@ const ScreenDetalle = (props) => {
 
                   <TextArea defaultValue={formData?.attributed_cause} placeholder="John"
                     isDisabled={estadoEdicion}
-                    onChangeText={value => setData({
-                      ...formData,
-                      name: value
-                    })} />
+                    onChangeText={(value) => handleChangeText('attributed_cause', value)} />
                 </Skeleton.Text>
 
                 <FormControl.Label _text={{
@@ -302,7 +290,7 @@ const ScreenDetalle = (props) => {
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
                   <TextArea defaultValue={formData?.take_actions}
-
+                    onChangeText={(value) => handleChangeText('take_actions', value)}
                     h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder"
                     multiline={true}
                     w="100%" maxW="300" />
@@ -319,9 +307,14 @@ const ScreenDetalle = (props) => {
                 }}>Resultados</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <TextArea defaultValue={formData?.results} h={20} isDisabled={estadoEdicion} placeholder="Text Area Placeholder" w="100%" maxW="300" />
+                  <TextArea defaultValue={formData?.results} h={20}
+                    onChangeText={(value) => handleChangeText('results', value)}
+                    isDisabled={estadoEdicion}
+                    placeholder="Text Area Placeholder" w="100%" maxW="300" />
                 </Skeleton.Text>
 
+
+                {/* imagenes para editar */}
                 <View style={[{ marginBottom: 35 }, styles.shadows]}>
                   <ScrollView horizontal>
                     <View style={{ flexDirection: 'row', margin: 10 }}>
@@ -425,8 +418,8 @@ const ScreenDetalle = (props) => {
             }} _dark={{
               bg: "coolGray.800"
             }} _light={{
-              bg: "white"            
-              }}>
+              bg: "white"
+            }}>
             <Icon name="md-pencil" style={styles.actionButtonIcon} />
           </ActionButton.Item> :
             <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() => toast.show({

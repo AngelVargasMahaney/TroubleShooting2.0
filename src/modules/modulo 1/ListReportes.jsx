@@ -18,7 +18,7 @@ const ListReportes = () => {
 
         getTroubleShooting().then(rpta => {
             setListData(rpta.data.data)
-            console.log(rpta.data.data)
+            console.log(rpta.data.data[7].date)
         })
     }
 
@@ -46,7 +46,7 @@ const ListReportes = () => {
 
 
     const [IdEliminar, setIdEliminar] = useState()
-    console.log(IdEliminar)
+    //console.log(IdEliminar)
     const eliminarTroubleshooting = () => {
 
         deleteTroubleshootingById(IdEliminar).then((rpta) => {

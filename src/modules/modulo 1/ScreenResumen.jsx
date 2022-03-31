@@ -38,7 +38,7 @@ const ScreenResumen = (props) => {
 
   const [cargando, setCargando] = useState(false)
   console.log("Soy la data del formulario del Screen Resumen:")
-  console.log(formData.attachments)
+  console.log(formData.date)
 
   const [botonH, setBotonH] = useState(false);
   const fecha = (formData.date).getDate() + '/' + ((formData.date).getMonth() + 1) + '/' + (formData.date).getFullYear()
