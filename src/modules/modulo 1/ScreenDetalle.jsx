@@ -204,7 +204,7 @@ const ScreenDetalle = (props) => {
                   <Input defaultValue={miEquipo} placeholder="John"
                     // isDisabled={estadoEdicion}
                     isDisabled={true}
-                  //Aqui falta un modal para cambiar de equipo
+                  //Aqui falta un modal para cambiar de equipo.
                   />
                 </Skeleton.Text>
 
