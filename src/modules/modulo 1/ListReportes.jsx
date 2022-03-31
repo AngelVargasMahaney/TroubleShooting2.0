@@ -76,6 +76,7 @@ const ListReportes = () => {
         item,
         index
     }) =>
+    
         <Box>
             <Pressable onPress={() => toast.show({
                 description: "Deslice para más acciones"
@@ -93,7 +94,7 @@ const ListReportes = () => {
                             <Text color="coolGray.800" _dark={{
                                 color: "warmGray.50"
                             }} bold>
-                                {(item.event).slice(0, 25) + " ..."}
+                                {(item?.event) + " ..."}
                             </Text>
                             <Text color="coolGray.600" _dark={{
                                 color: "warmGray.200"
@@ -158,16 +159,16 @@ const ListReportes = () => {
             <View style={styles.container}>
                 {/* <Text>{filteredDataSource[0]?.event}</Text> */}
 
-
-                <SwipeListView
-                    data={listData}
-                    renderItem={renderItem}
-                    renderHiddenItem={renderHiddenItem}
-                    rightOpenValue={-130} previewRowKey={"0"}
-                    previewOpenValue={-40}
-                    previewOpenDelay={3000}
-                    onRowDidOpen={onRowDidOpen} />
-
+   
+                    <SwipeListView
+                        data={listData}
+                        renderItem={renderItem}
+                        renderHiddenItem={renderHiddenItem}
+                        rightOpenValue={-130} previewRowKey={"0"}
+                        previewOpenValue={-40}
+                        previewOpenDelay={3000}
+                        onRowDidOpen={onRowDidOpen} />
+               
 
             </View>
             <SCLAlert

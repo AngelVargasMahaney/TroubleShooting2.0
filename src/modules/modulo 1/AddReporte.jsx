@@ -16,7 +16,7 @@ import imgDefault from '../../../assets/logos/Logo_Antapaccay.png'
 
 const AddReporte = () => {
 
-    const [dateS, setDateS] = useState(new Date(1598051730000));
+    const [dateS, setDateS] = useState(new Date());
 
     const [miObjeto, setMiObjeto] = useState({
         event: '',
@@ -73,6 +73,7 @@ const AddReporte = () => {
     const [show, setShow] = useState(false);
     const onChange = (event, selectedDate) => {
         const currentDate = selectedDate;
+        console.log(currentDate)
         setShow(false);
         setDateS(currentDate);
         miObjeto.date = currentDate

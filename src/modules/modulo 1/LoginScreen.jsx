@@ -50,6 +50,7 @@ const LoginScreen = () => {
             navigation.navigate('Home')
             setTextoCambiante('Ingreso Exitoso')
         }, err => {
+            setCargando(false)
             console.warn(err)
             alert("Usuario no encontrado")
         })
