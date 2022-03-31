@@ -102,6 +102,7 @@ const styles = StyleSheet.create({
         marginTop: 20
     },
     containerLogo2: {
+        marginTop:-30,
         flexDirection: 'row',
         justifyContent: 'flex-start',
     },
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     icon2: {
-        marginTop: 10,
+        marginTop:10,
         fontSize: 20,
         color: 'rgba(1,40,107,1)'
     },
