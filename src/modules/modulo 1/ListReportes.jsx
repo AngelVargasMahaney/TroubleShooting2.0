@@ -76,7 +76,7 @@ const ListReportes = () => {
         item,
         index
     }) =>
-    
+
         <Box>
             <Pressable onPress={() => toast.show({
                 description: "Deslice para más acciones"
@@ -88,13 +88,15 @@ const ListReportes = () => {
                 <Box pl="4" pr="5" py="2" >
                     <HStack alignItems="center" space={3}>
                         <Avatar size="48px" source={{
-                            uri: item.equipment?.cover
+
+                            uri: item?.equipment == null ? 'https://yosirvoblog.files.wordpress.com/2016/05/fir-reporte-de-incidentes-de-edificios.png' : item.equipment?.cover
+
                         }} />
                         <VStack width="85%">
                             <Text color="coolGray.800" _dark={{
                                 color: "warmGray.50"
                             }} bold>
-                                {(item?.event) + " ..."}
+                                {(item?.event).slice(0,25) + " ..."}
                             </Text>
                             <Text color="coolGray.600" _dark={{
                                 color: "warmGray.200"
@@ -159,16 +161,16 @@ const ListReportes = () => {
             <View style={styles.container}>
                 {/* <Text>{filteredDataSource[0]?.event}</Text> */}
 
-   
-                    <SwipeListView
-                        data={listData}
-                        renderItem={renderItem}
-                        renderHiddenItem={renderHiddenItem}
-                        rightOpenValue={-130} previewRowKey={"0"}
-                        previewOpenValue={-40}
-                        previewOpenDelay={3000}
-                        onRowDidOpen={onRowDidOpen} />
-               
+
+                <SwipeListView
+                    data={listData}
+                    renderItem={renderItem}
+                    renderHiddenItem={renderHiddenItem}
+                    rightOpenValue={-130} previewRowKey={"0"}
+                    previewOpenValue={-40}
+                    previewOpenDelay={3000}
+                    onRowDidOpen={onRowDidOpen} />
+
 
             </View>
             <SCLAlert
