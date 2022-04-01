@@ -115,6 +115,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+      
     },
     logo: {
         marginTop: 20,
