@@ -5,7 +5,7 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 
 import TemplateScreen from '../../Template/TemplateScreen'
-import { getSearch, getTroubleShooting } from '../services/misServicios'
+import { getSearch, getTroubleShooting,deleteTroubleshootingById } from '../services/misServicios'
 import { useNavigation } from '@react-navigation/native'
 import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
 import { Button, Card, Modal } from '@ui-kitten/components';
@@ -44,6 +44,22 @@ const ListReportes = () => {
     }
     const navigation = useNavigation();
     const toast = useToast();
+
+    //ELIMINAR
+
+    const [IdEliminar, setIdEliminar] = useState()
+    //console.log(IdEliminar)
+    const eliminarTroubleshooting = () => {
+
+        deleteTroubleshootingById(IdEliminar).then((rpta) => {
+            if (rpta.status === 200) {
+                //Se comprueba que se eliminó correctamente
+                traerTroubles() //Se llama otra vez para setear la variable de estado y recargar la página automáticamente al borrar un usuario
+
+            }
+        })
+    }
+
 
 
     //SWIPELIST
@@ -114,9 +130,19 @@ const ListReportes = () => {
 
 
     const renderHiddenItem = (data, rowMap) => <HStack flex="1" pl="2">
-        <Pressable w="70" ml="auto" bg="coolGray.200" justifyContent="center" onPress={() => closeRow(rowMap, data.item.key)} _pressed={{
-            opacity: 0.5
-        }}>
+        <Pressable w="70" ml="auto" bg="coolGray.200"
+            justifyContent="center"
+            onPress={() =>
+                navigation.navigate('Detalle',
+                    {
+                        id: data.item.id
+                        // ,traerTroubles
+                    })
+            }
+
+            _pressed={{
+                opacity: 0.5
+            }}>
             <VStack alignItems="center" space={2}>
                 <Icon as={<Entypo name="eye" />} size="xs" color="coolGray.800" />
                 <Text fontSize="xs" fontWeight="medium" color="coolGray.800">
@@ -124,9 +150,16 @@ const ListReportes = () => {
                 </Text>
             </VStack>
         </Pressable>
-        <Pressable w="70" bg="red.500" justifyContent="center" onPress={() => setShow(true)} _pressed={{
-            opacity: 0.5
-        }}>
+        <Pressable w="70" bg="red.500"
+            justifyContent="center"
+            onPress={() => {
+                setIdEliminar(data.item.id)
+                setShow(true)
+            }}
+
+            _pressed={{
+                opacity: 0.5
+            }}>
             <VStack alignItems="center" space={2}>
                 <Icon as={<MaterialIcons name="delete" />} color="white" size="xs" />
                 <Text color="white" fontSize="xs" fontWeight="medium">
@@ -199,11 +232,12 @@ const ListReportes = () => {
                 headerIconComponent={<Ionicons name="trash-outline" size={32} color="white" />}
             >
                 <SCLAlertButton theme="info" onPress={() => {
-                    console.log('Ingresé')
+                    setShow(false)
+                    eliminarTroubleshooting()
+                }}>Aceptar</SCLAlertButton>
+                <SCLAlertButton theme="info" onPress={() => {
                     setShow(false);
-
-
-                }}>Continuar</SCLAlertButton>
+                }}>Cancelar</SCLAlertButton>
             </SCLAlert>
             <Modal
                 visible={modalBuscar}
