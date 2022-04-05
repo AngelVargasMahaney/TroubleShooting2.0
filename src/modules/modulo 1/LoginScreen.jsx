@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, ImageBackground, Dimensions, ScrollView, Image, StatusBar, ActivityIndicator } from 'react-native';
 import React, { useState } from 'react';
-import { Box, Button, FormControl, Icon, Input, Stack, } from 'native-base';
+import { Box, Button, FormControl, Icon, Input, Stack, useToast, } from 'native-base';
 import FontAwesomeIcon from "react-native-vector-icons/FontAwesome";
 import { postLogin } from '../services/loginService';
 import { useAuth } from '../context/authState';
@@ -36,6 +36,8 @@ const LoginScreen = () => {
     const { token, setToken } = useAuth()
     const navigation = useNavigation();
 
+    const toast = useToast();
+
     const doLogin = () => {
         setCargando(true)
         setTextoCambiante('Cargando')
@@ -51,8 +53,11 @@ const LoginScreen = () => {
             setTextoCambiante('Ingreso Exitoso')
         }, err => {
             setCargando(false)
-            console.warn(err)
-            alert("Usuario no encontrado")
+            toast.show({
+                title: "Error",
+                status: "error",
+                description: "Usuario no encontrado"
+            })
         })
     }
 
@@ -118,7 +123,7 @@ const LoginScreen = () => {
                                             (<Button onPress={() => doLogin()} backgroundColor={'white'} _text={{ color: '#01286B' }}>Ingresar</Button>)
                                             :
                                             (<Button disabled={true} backgroundColor={'white'} _text={{ color: '#01286B' }}>
-                                                <ActivityIndicator size="small" color="#01286B"/>
+                                                <ActivityIndicator size="small" color="#01286B" />
                                             </Button>)
                                     }
 

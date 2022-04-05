@@ -59,10 +59,20 @@ const ScreenDetalle = (props) => {
     putTroubleshootingUpdate(formData, props.route.params.id).then((rpta) => {
 
       if (rpta.status === 200) {
-        console.warn("Subida extitosa")
-        navigation.goBack()
+        
+        navigation.replace('List')
+        toast.show({
+          title: "Registro Exitoso",
+          status: "success",
+          placement: "top",
+          description: "Se guardaron los cambios correctamente"
+        })
       } else {
-        console.warn("Subida errónea")
+        toast.show({
+          title: "Error",
+          status: "error",
+          description: "Ocurrió un error intente nuevamente"
+      })
 
       }
     }).catch(err => {
@@ -413,7 +423,8 @@ const ScreenDetalle = (props) => {
             onPress={() => {
               setEstadoEdicion(false);
               toast.show({
-                description: "Modo Edición"
+                status: "info",
+                title: "Modo Edición"
               })
             }} _dark={{
               bg: "coolGray.800"
@@ -423,7 +434,7 @@ const ScreenDetalle = (props) => {
             <Icon name="md-pencil" style={styles.actionButtonIcon} />
           </ActionButton.Item> :
             <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() => toast.show({
-              description: "Ya estas en modo Edición"
+              status: "warning",title: "Ya estas en modo Edición"
             })} _dark={{
               bg: "coolGray.800"
             }} _light={{
@@ -436,7 +447,7 @@ const ScreenDetalle = (props) => {
         {
           estadoEdicion ?
             <ActionButton.Item buttonColor='#1abc9c' title="Elige editar primero" onPress={() => toast.show({
-              description: "Primero entra en el modo Edición"
+              status: "warning",title: "Primero entra en el modo Edición"
             })} _dark={{
               bg: "coolGray.800"
             }} _light={{

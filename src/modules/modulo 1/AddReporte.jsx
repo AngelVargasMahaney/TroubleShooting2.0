@@ -547,7 +547,7 @@ const AddReporte = () => {
                         </Pressable>
                     </View>
 
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center',maxHeight:(useWindowDimensions().height) - 350 }}>
 
                         <SearchableDropDown
 
@@ -616,7 +616,7 @@ const AddReporte = () => {
                 visible={modalBuscarEquipos}
                 backdropStyle={styles.backdrop}
                 onBackdropPress={() => setModalBuscarEquipos(false)}>
-                <Card disabled={true} style={{ width: (useWindowDimensions().width) - 50 }}>
+                <Card disabled={true} style={{ width: (useWindowDimensions().width) - 50}}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20, paddingBottom: 7, borderBottomWidth: 1 }}>
                         <Text style={{ textAlign: 'left' }}>Búsqueda Rápida</Text>
                         <Pressable style={{ backgroundColor: '#FC441C', borderRadius: 5, padding: 3 }} onPress={() => setModalBuscarEquipos(false)}>
@@ -624,7 +624,7 @@ const AddReporte = () => {
                         </Pressable>
                     </View>
 
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ justifyContent:"center",alignItems: 'center' ,  maxHeight:(useWindowDimensions().height) - 400, marginTop: -15, marginBottom: -15}}>
 
                         <SearchableDropDown
 
@@ -632,7 +632,7 @@ const AddReporte = () => {
                             //On text change listner on the searchable input
                             onItemSelect={(item) => setInputEquipos(item)}
                             //onItemSelect called after the selection from the dropdown
-                            containerStyle={{ padding: 5, width: 200 }}
+                            containerStyle={{ padding: 5, width: "100%" }}
                             //suggestion container style
                             textInputStyle={{
                                 //inserted text style
@@ -658,7 +658,7 @@ const AddReporte = () => {
                             itemsContainerStyle={{
                                 //items container style you can pass maxHeight
                                 //to restrict the items dropdown hieght
-                                maxHeight: '50%',
+                                maxHeight: '80%',
 
                             }}
                             items={equipos}

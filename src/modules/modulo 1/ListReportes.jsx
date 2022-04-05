@@ -1,19 +1,38 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
-import { NativeBaseProvider, Box, Text, Pressable, Heading, IconButton, Icon, HStack, Avatar, VStack, Spacer, Center, useToast, Divider, Select, Input } from "native-base";
+import {
+    NativeBaseProvider,
+    Box, Text,
+    Pressable,
+    Heading,
+    IconButton,
+    Icon, HStack,
+    Avatar, VStack,
+    Spacer, Center,
+    useToast,
+    Divider,
+    Select,
+    Input,
+    Modal,
+    FormControl,
+    Button,
+    
+} from "native-base";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
 
 import TemplateScreen from '../../Template/TemplateScreen'
-import { getSearch, getTroubleShooting,deleteTroubleshootingById } from '../services/misServicios'
+import { getSearch, getTroubleShooting, deleteTroubleshootingById } from '../services/misServicios'
 import { useNavigation } from '@react-navigation/native'
 import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
-import { Button, Card, Modal } from '@ui-kitten/components';
+//import { Button, Card, Modal } from '@ui-kitten/components';
 
 
 const ListReportes = () => {
 
+    const toast = useToast();
 
+    
     const [listData, setListData] = useState([]);
     const traerTroubles = () => {
 
@@ -43,7 +62,6 @@ const ListReportes = () => {
         })
     }
     const navigation = useNavigation();
-    const toast = useToast();
 
     //ELIMINAR
 
@@ -54,8 +72,20 @@ const ListReportes = () => {
         deleteTroubleshootingById(IdEliminar).then((rpta) => {
             if (rpta.status === 200) {
                 //Se comprueba que se eliminó correctamente
+                setShow(false)
                 traerTroubles() //Se llama otra vez para setear la variable de estado y recargar la página automáticamente al borrar un usuario
-
+                toast.show({
+                    title: "Eliminación exitosa",
+                    status: "success",
+                    description: "Se ha eliminado correctamente el Troubleshooting"
+                  })
+            }
+            else{
+                 toast.show({
+                    title: "Error",
+                    status: "error",
+                    description: "Ocurrió un error, intente nuevamente"
+                  })
             }
         })
     }
@@ -70,19 +100,16 @@ const ListReportes = () => {
         }
     };
 
-    const deleteRow = (rowMap, rowKey) => {
-        closeRow(rowMap, rowKey);
-        const newData = [...listData];
-        const prevIndex = listData.findIndex(item => item.key === rowKey);
-        newData.splice(prevIndex, 1);
-        setListData(newData);
-    };
 
     const onRowDidOpen = rowKey => {
         // console.log("This row opened", rowKey);
     };
 
+    //ALERTA
     const [show, setShow] = useState(false)
+    //
+
+
     const renderItem = ({
         item,
         index
@@ -232,14 +259,73 @@ const ListReportes = () => {
                 headerIconComponent={<Ionicons name="trash-outline" size={32} color="white" />}
             >
                 <SCLAlertButton theme="info" onPress={() => {
-                    setShow(false)
+                   
                     eliminarTroubleshooting()
                 }}>Aceptar</SCLAlertButton>
                 <SCLAlertButton theme="info" onPress={() => {
                     setShow(false);
                 }}>Cancelar</SCLAlertButton>
             </SCLAlert>
-            <Modal
+
+            <Modal isOpen={modalBuscar} onClose={() => setModalBuscar(false)}>
+                <Modal.Content maxWidth="400px">
+                    <Modal.CloseButton />
+                    <Modal.Header>
+                        <Text style={{ textAlign: 'left', fontWeight: 'bold', fontSize: 16}}>
+                            Búsqueda Personalizada
+                        </Text></Modal.Header>
+                    <Modal.Body>
+                        <FormControl>
+                            <FormControl.Label><Text style={{ textAlign: 'left', fontWeight: 'bold'}}>
+                            Tipo
+                        </Text></FormControl.Label>
+                            <Select
+                                selectedValue={selectOption}
+                                w="75%"
+                                accessibilityLabel="Seleccione una opción"
+                                placeholder="Selecciones un tipo"
+                                _selectedItem={{
+                                    
+                                    endIcon: <Ionicons name="checkmark-circle-outline" size={32} color="#062D73" />
+                                }} mt={1} onValueChange={itemValue => setSelectOption(itemValue)}>
+                                <Select.Item label="Evento" value="1" />
+                                <Select.Item label="Causa" value="2" />
+                                <Select.Item label="Equipo" value="3" />
+                            </Select>
+                        </FormControl>
+                        <FormControl mt="3">
+                            <FormControl.Label><Text style={{ textAlign: 'left', fontWeight: 'bold'}}>
+                            Cadena de Búsqueda
+                        </Text></FormControl.Label>
+                            <Input
+                                value={textoBuscar}
+
+                                maxW="300px"
+                                onChangeText={handleChange}
+                                placeholder="Liner" />
+                        </FormControl>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button.Group space={2}>
+                            <Button variant="ghost" colorScheme="blueGray" onPress={() => {
+                                setModalBuscar(false);
+                            }}>
+                                Cerrar
+                            </Button>
+                            <Button 
+                            style={{ backgroundColor: '#062D73' }}
+                            onPress={() => {
+                                traerBusqueda(),
+                                    setModalBuscar(false)
+                            }}>
+                                Buscar
+                            </Button>
+                        </Button.Group>
+                    </Modal.Footer>
+                </Modal.Content>
+            </Modal>
+
+            {/* <Modal
                 visible={modalBuscar}
                 backdropStyle={styles.backdrop}
                 onBackdropPress={() => setModalBuscar(false)}>
@@ -260,7 +346,7 @@ const ListReportes = () => {
                         </Button>
                     </Card>
                 </View>
-            </Modal>
+            </Modal> */}
         </>
     )
 }
