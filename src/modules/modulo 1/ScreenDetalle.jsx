@@ -59,7 +59,7 @@ const ScreenDetalle = (props) => {
     putTroubleshootingUpdate(formData, props.route.params.id).then((rpta) => {
 
       if (rpta.status === 200) {
-        
+
         navigation.replace('List')
         toast.show({
           title: "Registro Exitoso",
@@ -72,7 +72,7 @@ const ScreenDetalle = (props) => {
           title: "Error",
           status: "error",
           description: "Ocurrió un error intente nuevamente"
-      })
+        })
 
       }
     }).catch(err => {
@@ -144,7 +144,9 @@ const ScreenDetalle = (props) => {
         <ScrollView style={{ marginBottom: 75 }} >
           <View style={[{ alignItems: 'center', marginBottom: 35 }, styles.shadows]}>
             <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%' }}>
-              <Text style={{ textAlign: 'center', color: '#01286B', fontSize: 18 }}>{titleEvent?.toUpperCase()}</Text>
+              <Skeleton.Text px="4" lines={2} alignItems="center" isLoaded={skeletonLoader}>
+                <Text style={{ textAlign: 'center', color: '#01286B', fontSize: 18 }}>{titleEvent?.toUpperCase()}</Text>
+              </Skeleton.Text>
             </View>
 
 
@@ -155,7 +157,7 @@ const ScreenDetalle = (props) => {
                     bold: true
                   }}>Fecha </FormControl.Label>
 
-                    <Skeleton.Text px="4" isLoaded={skeletonLoader}>
+                    <Skeleton.Text px="4" lines={2}  isLoaded={skeletonLoader}>
                       <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{fecha}</Text>
                     </Skeleton.Text>
 
@@ -163,7 +165,7 @@ const ScreenDetalle = (props) => {
                   <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
                     bold: true
                   }}>Hora </FormControl.Label>
-                    <Skeleton.Text px="4" isLoaded={skeletonLoader}>
+                    <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
                       <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{hora}</Text>
                     </Skeleton.Text>
                   </View>
@@ -182,7 +184,7 @@ const ScreenDetalle = (props) => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Superintendente</FormControl.Label>
-                <Skeleton.Text px="4" isLoaded={skeletonLoader}>
+                <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
                   <Input defaultValue={formData?.superintendent} placeholder="John"
                     isDisabled={estadoEdicion}
                     onChangeText={(value) => handleChangeText('superintendent', value)} />
@@ -191,7 +193,7 @@ const ScreenDetalle = (props) => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Supervisor</FormControl.Label>
-                <Skeleton.Text px="4" isLoaded={skeletonLoader}>
+                <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
                   <Input defaultValue={formData?.supervisor} placeholder="John"
                     isDisabled={estadoEdicion}
                     onChangeText={(value) => handleChangeText('supervisor', value)} />
@@ -209,7 +211,7 @@ const ScreenDetalle = (props) => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Equipo Afectado</FormControl.Label>
-                <Skeleton.Text px="4" isLoaded={skeletonLoader}>
+                <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
 
                   <Input defaultValue={miEquipo} placeholder="John"
                     // isDisabled={estadoEdicion}
@@ -228,7 +230,7 @@ const ScreenDetalle = (props) => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Tiempo de Parada</FormControl.Label>
-                <Skeleton.Text px="4" isLoaded={skeletonLoader}>
+                 <Skeleton.Text px="4" lines={2} w="40"isLoaded={skeletonLoader}>
 
                   <InputGroup w={{
                     base: "70%",
@@ -252,7 +254,7 @@ const ScreenDetalle = (props) => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Detalle de parada</FormControl.Label>
-                <Skeleton.Text px="4" isLoaded={skeletonLoader}>
+                <Skeleton.Text px="4"  isLoaded={skeletonLoader}>
 
                   <TextArea defaultValue={formData?.details} h={20}
                     onChangeText={(value) => handleChangeText('details', value)}
@@ -434,7 +436,7 @@ const ScreenDetalle = (props) => {
             <Icon name="md-pencil" style={styles.actionButtonIcon} />
           </ActionButton.Item> :
             <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() => toast.show({
-              status: "warning",title: "Ya estas en modo Edición"
+              status: "warning", title: "Ya estas en modo Edición"
             })} _dark={{
               bg: "coolGray.800"
             }} _light={{
@@ -447,7 +449,7 @@ const ScreenDetalle = (props) => {
         {
           estadoEdicion ?
             <ActionButton.Item buttonColor='#1abc9c' title="Elige editar primero" onPress={() => toast.show({
-              status: "warning",title: "Primero entra en el modo Edición"
+              status: "warning", title: "Primero entra en el modo Edición"
             })} _dark={{
               bg: "coolGray.800"
             }} _light={{

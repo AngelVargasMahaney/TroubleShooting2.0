@@ -7,7 +7,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 
 const TemplateScreen = (props) => {
-    
+
     const fadeAnim = useRef(new Animated.Value(0)).current  // Initial value for opacity: 0
     const [keyboardStatus, setKeyboardStatus] = useState(false);
 
@@ -100,7 +100,14 @@ const TemplateScreen = (props) => {
                     style={{ backgroundColor: '#f0f2f0' }}
                     title={renderTitle}
                     accessoryRight={renderOverflowMenuAction}
-                    accessoryLeft={ props.miNombre == 'Home' ? null : <Pressable onPress={() => navigation.navigate('Home')}><Icon style={{ marginTop: 20, marginRight: -10 }} as={Ionicons} size={7} name="arrow-back-circle-outline" color={'#01286B'} /></Pressable>}
+                    accessoryLeft={props.miNombre == 'Home' ? null :
+                        <Pressable onPress={() => navigation.navigate('Home')}>
+                            <Icon style={{ marginTop: 20, marginRight: -10 }}
+                                as={Ionicons}
+                                size={7}
+                                name="arrow-back-circle-outline"
+                                color={'#01286B'} />
+                        </Pressable>}
                 />
             </Animated.View>
         </>
@@ -115,7 +122,7 @@ const styles = StyleSheet.create({
     titleContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-      
+
     },
     logo: {
         marginTop: 20,

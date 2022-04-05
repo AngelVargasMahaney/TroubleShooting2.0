@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, View, Dimensions, TouchableOpacity, ScrollView } from "react-native";
+import { StyleSheet, View, Dimensions, TouchableOpacity, ScrollView, ActivityIndicator, Image } from "react-native";
 import {
     NativeBaseProvider,
     Box, Text,
@@ -16,7 +16,7 @@ import {
     Modal,
     FormControl,
     Button,
-    
+
 } from "native-base";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { MaterialIcons, Ionicons, Entypo } from "@expo/vector-icons";
@@ -25,20 +25,23 @@ import TemplateScreen from '../../Template/TemplateScreen'
 import { getSearch, getTroubleShooting, deleteTroubleshootingById } from '../services/misServicios'
 import { useNavigation } from '@react-navigation/native'
 import { SCLAlert, SCLAlertButton } from 'react-native-scl-alert';
+import TemplateScreenNoHeader from '../../Template/TemplateScreenNoHeader';
 //import { Button, Card, Modal } from '@ui-kitten/components';
 
 
-const ListReportes = () => {
+const ListReportes = (props) => {
 
     const toast = useToast();
+    //LOADING
+    const [cargando, setCargando] = useState(true)
 
-    
     const [listData, setListData] = useState([]);
     const traerTroubles = () => {
-
+        setTextoBuscar('')
+        setCargando(true)
         getTroubleShooting().then(rpta => {
             setListData(rpta.data.data)
-            console.log(rpta.data.data)
+            setCargando(false)
         })
     }
 
@@ -53,10 +56,13 @@ const ListReportes = () => {
     let [service, setService] = React.useState("");
 
     const traerBusqueda = () => {
-
+        setCargando(true)
         getSearch(selectOption, textoBuscar).then(rpta => {
             //getSearch( service, search).then(rpta => {
-            setFilteredDataSource(rpta.data.data)
+            console.log('search')
+            setListData(rpta.data.data)
+            setCargando(false)
+
 
             // console.log("searrch" + rpta.data.data)
         })
@@ -78,14 +84,14 @@ const ListReportes = () => {
                     title: "Eliminación exitosa",
                     status: "success",
                     description: "Se ha eliminado correctamente el Troubleshooting"
-                  })
+                })
             }
-            else{
-                 toast.show({
+            else {
+                toast.show({
                     title: "Error",
                     status: "error",
                     description: "Ocurrió un error, intente nuevamente"
-                  })
+                })
             }
         })
     }
@@ -116,13 +122,17 @@ const ListReportes = () => {
     }) =>
 
         <Box>
-            <Pressable onPress={() => toast.show({
-                description: "Deslice para más acciones"
-            })} _dark={{
-                bg: "coolGray.800"
-            }} _light={{
-                bg: "white"
-            }}>
+            <Pressable
+                onPress={() =>
+                    toast.show({
+                        title: "Aviso",
+                        status: "information",
+                        description: "Deslice a la izquierda para más acciones"
+                    })} _dark={{
+                        bg: "coolGray.800"
+                    }} _light={{
+                        bg: "white"
+                    }}>
                 <Box pl="4" pr="5" py="2" style={[styles.shadows, { backgroundColor: 'rgba(192, 190, 190, 0.26)' }]}>
                     <HStack alignItems="center" space={3}>
                         <Avatar size="48px" source={{
@@ -137,7 +147,13 @@ const ListReportes = () => {
                             <Text color="coolGray.600" _dark={{
                                 color: "warmGray.200"
                             }}>
-                                {item.operators}
+                                {item.superintendent}
+                            </Text><Text color="coolGray.600" _dark={{
+                                color: "warmGray.200"
+                            }}>
+                                {(new Date(item.date)).toLocaleDateString()}
+                                {"\t"}
+                                {(new Date(item.date)).toLocaleTimeString()}
                             </Text>
                         </VStack>
                         <Spacer />
@@ -201,16 +217,15 @@ const ListReportes = () => {
     const [textoBuscar, setTextoBuscar] = useState('')
     const handleChange = text => setTextoBuscar(text);
 
-    useEffect(() => {
-        console.log("filteredDataSource")
-        console.log(filteredDataSource)
-    })
 
+    const [botonH, setBotonH] = useState(true);
 
     return (
 
         <>
-            <TemplateScreen />
+            {
+                botonH ? <TemplateScreen setBotonH={setBotonH} /> : <TemplateScreenNoHeader setBotonH={setBotonH} />
+            }
 
             <View style={styles.container}>
                 {/* <Text>{filteredDataSource[0]?.event}</Text> */}
@@ -225,7 +240,7 @@ const ListReportes = () => {
                     }}>Lista de Reportes</Text>
                     {
                         textoBuscar !== '' ?
-                            <Pressable onPress={() => { setTextoBuscar('') }}>
+                            <Pressable onPress={() => { traerTroubles() }}>
                                 <Icon as={Ionicons} size={5} name='close-outline' color={'rgba(1,40,107,1)'} />
                             </Pressable>
                             :
@@ -235,20 +250,39 @@ const ListReportes = () => {
                     }
 
                 </View>
+                {cargando ?
 
-                <SwipeListView
+                    <View style={{ alignSelf: 'center' }}>
+                        <ActivityIndicator size="large" color="#01286B" />
+                    </View>
+                    :
+                    <SwipeListView
 
-                    data={textoBuscar !== '' ? filteredDataSource : listData}
-                    renderItem={renderItem}
-                    renderHiddenItem={renderHiddenItem}
-                    rightOpenValue={-130} previewRowKey={"0"}
-                    previewOpenValue={-40}
-                    showsVerticalScrollIndicator={false}
-                    previewOpenDelay={3000}
-                    onRowDidOpen={onRowDidOpen} />
-
+                        //
+                        data={listData}
+                        renderItem={renderItem}
+                        renderHiddenItem={renderHiddenItem}
+                        rightOpenValue={-130} previewRowKey={"0"}
+                        previewOpenValue={-40}
+                        showsVerticalScrollIndicator={false}
+                        previewOpenDelay={3000}
+                        onRowDidOpen={onRowDidOpen} />
+                }
 
             </View>
+            
+            {/* IMAGE FOOTER */}
+            {/* <View style={styles.containerFooter}>
+                <View style={{ width: 120, height: 120 }}>
+                    <Image
+                        source={require('../../../assets/backgrounds/Colors.png')} style={{
+                            height: '100%',
+                            width: '100%',
+                            resizeMode: 'cover',
+
+                        }} />
+                </View>
+            </View> */}
 
             <SCLAlert
                 show={show}
@@ -259,7 +293,7 @@ const ListReportes = () => {
                 headerIconComponent={<Ionicons name="trash-outline" size={32} color="white" />}
             >
                 <SCLAlertButton theme="info" onPress={() => {
-                   
+
                     eliminarTroubleshooting()
                 }}>Aceptar</SCLAlertButton>
                 <SCLAlertButton theme="info" onPress={() => {
@@ -269,23 +303,23 @@ const ListReportes = () => {
 
             <Modal isOpen={modalBuscar} onClose={() => setModalBuscar(false)}>
                 <Modal.Content maxWidth="400px">
-                    <Modal.CloseButton />
+
                     <Modal.Header>
-                        <Text style={{ textAlign: 'left', fontWeight: 'bold', fontSize: 16}}>
+                        <Text style={{ textAlign: 'left', fontWeight: 'bold', fontSize: 16 }}>
                             Búsqueda Personalizada
                         </Text></Modal.Header>
                     <Modal.Body>
                         <FormControl>
-                            <FormControl.Label><Text style={{ textAlign: 'left', fontWeight: 'bold'}}>
-                            Tipo
-                        </Text></FormControl.Label>
+                            <FormControl.Label><Text style={{ textAlign: 'left', fontWeight: 'bold' }}>
+                                Tipo
+                            </Text></FormControl.Label>
                             <Select
                                 selectedValue={selectOption}
                                 w="75%"
                                 accessibilityLabel="Seleccione una opción"
                                 placeholder="Selecciones un tipo"
                                 _selectedItem={{
-                                    
+
                                     endIcon: <Ionicons name="checkmark-circle-outline" size={32} color="#062D73" />
                                 }} mt={1} onValueChange={itemValue => setSelectOption(itemValue)}>
                                 <Select.Item label="Evento" value="1" />
@@ -294,9 +328,9 @@ const ListReportes = () => {
                             </Select>
                         </FormControl>
                         <FormControl mt="3">
-                            <FormControl.Label><Text style={{ textAlign: 'left', fontWeight: 'bold'}}>
-                            Cadena de Búsqueda
-                        </Text></FormControl.Label>
+                            <FormControl.Label><Text style={{ textAlign: 'left', fontWeight: 'bold' }}>
+                                Cadena de Búsqueda
+                            </Text></FormControl.Label>
                             <Input
                                 value={textoBuscar}
 
@@ -308,16 +342,17 @@ const ListReportes = () => {
                     <Modal.Footer>
                         <Button.Group space={2}>
                             <Button variant="ghost" colorScheme="blueGray" onPress={() => {
-                                setModalBuscar(false);
+                                setModalBuscar(false)
+                                //setTextoBuscar('')
                             }}>
                                 Cerrar
                             </Button>
-                            <Button 
-                            style={{ backgroundColor: '#062D73' }}
-                            onPress={() => {
-                                traerBusqueda(),
-                                    setModalBuscar(false)
-                            }}>
+                            <Button
+                                style={{ backgroundColor: '#062D73' }}
+                                onPress={() => {
+                                    traerBusqueda(),
+                                        setModalBuscar(false)
+                                }}>
                                 Buscar
                             </Button>
                         </Button.Group>
@@ -385,5 +420,15 @@ const styles = StyleSheet.create({
         shadowRadius: 0.84,
 
         elevation: 0.3,
+    },
+    containerFooter: {
+
+        position: 'absolute',
+        zIndex: -1,
+        width: 150,
+        height: '100%',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end',
+
     },
 })
