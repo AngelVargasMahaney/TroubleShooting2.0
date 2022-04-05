@@ -5,7 +5,7 @@ import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
 import { FormControl, Input, VStack, Pressable, TextArea, FlatList, HStack, Skeleton, InputGroup, InputRightAddon, useToast } from 'native-base';
 import TemplateScreenNoHeader from '../../Template/TemplateScreenNoHeader';
 import { Ionicons } from '@expo/vector-icons';
-import { getEquimentById, getTroubleShootingById, putTroubleshootingUpdate } from '../services/misServicios';
+import { getEquiment, getEquimentById, getTroubleShootingById, putTroubleshootingUpdate } from '../services/misServicios';
 import SearchableDropDown from 'react-native-searchable-dropdown';
 import { Card, Modal, Button } from '@ui-kitten/components';
 import DateTimePicker from '@react-native-community/datetimepicker';
@@ -129,7 +129,25 @@ const ScreenDetalle = (props) => {
   useEffect(() => {
   })
 
+  //Modal por Equipos
+  const [modalBuscarEquipos, setModalBuscarEquipos] = useState(false)
+  const [inputBuscarEquipos, setInputBuscarEquipos] = useState('')
+
   const navigation = useNavigation()
+
+  const [misEquipos, setMisEquipos] = useState([])
+  const [miValorModalEquipos, setMiValorModalEquipos] = useState('')
+  const traerEquipos = () => {
+
+    getEquiment().then(rpta => {
+      setMisEquipos(rpta.data.data)
+    })
+  }
+
+
+  useEffect(() => {
+    traerEquipos()
+  }, [])
   return (
 
     <>
@@ -157,7 +175,7 @@ const ScreenDetalle = (props) => {
                     bold: true
                   }}>Fecha </FormControl.Label>
 
-                    <Skeleton.Text px="4" lines={2}  isLoaded={skeletonLoader}>
+                    <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
                       <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{fecha}</Text>
                     </Skeleton.Text>
 
@@ -210,10 +228,14 @@ const ScreenDetalle = (props) => {
 
                 <FormControl.Label _text={{
                   bold: true
-                }}>Equipo Afectado</FormControl.Label>
+                }} my={2}>Equipo Afectado
+                
+                {!estadoEdicion ? (<Pressable onPress={() => setModalBuscarEquipos(true)}><Icon as={Ionicons} size={18} name="search-circle-sharp" /></Pressable>) : (null)}
+
+                </FormControl.Label>
                 <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
 
-                  <Input defaultValue={miEquipo} placeholder="John"
+                  <Input defaultValue={!estadoEdicion ? miValorModalEquipos : miEquipo} placeholder="John"
                     // isDisabled={estadoEdicion}
                     isDisabled={true}
                   //Aqui falta un modal para cambiar de equipo.
@@ -230,7 +252,7 @@ const ScreenDetalle = (props) => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Tiempo de Parada</FormControl.Label>
-                 <Skeleton.Text px="4" lines={2} w="40"isLoaded={skeletonLoader}>
+                <Skeleton.Text px="4" lines={2} w="40" isLoaded={skeletonLoader}>
 
                   <InputGroup w={{
                     base: "70%",
@@ -254,7 +276,7 @@ const ScreenDetalle = (props) => {
                 <FormControl.Label _text={{
                   bold: true
                 }}>Detalle de parada</FormControl.Label>
-                <Skeleton.Text px="4"  isLoaded={skeletonLoader}>
+                <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
                   <TextArea defaultValue={formData?.details} h={20}
                     onChangeText={(value) => handleChangeText('details', value)}
@@ -492,7 +514,82 @@ const ScreenDetalle = (props) => {
 
         }}>Continuar</SCLAlertButton>
       </SCLAlert>
+      <Modal
+        visible={modalBuscarEquipos}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setModalBuscarEquipos(false)}>
+        <Card disabled={true} style={{ width: (useWindowDimensions().width) - 50 }}>
+          <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20, paddingBottom: 7, borderBottomWidth: 1 }}>
+            <Text style={{ textAlign: 'left' }}>Búsqueda Rápida</Text>
+            <Pressable style={{ backgroundColor: '#FC441C', borderRadius: 5, padding: 3 }} onPress={() => setModalBuscarEquipos(false)}>
+              <Icon as={Ionicons} size={18} name="close-outline" style={{ color: 'white' }} />
+            </Pressable>
+          </View>
 
+          <View style={{ justifyContent: 'center', alignItems: 'center', maxHeight: (useWindowDimensions().height) - 350 }}>
+
+            <SearchableDropDown
+
+              onTextChange={(text) => console.log("")}
+              //On text change listner on the searchable input
+              onItemSelect={(item) => setInputBuscarEquipos(item)}
+              //onItemSelect called after the selection from the dropdown
+              containerStyle={{ padding: 5, width: 200 }}
+              //suggestion container style
+              textInputStyle={{
+                //inserted text style
+                padding: 5,
+
+                borderWidth: 1,
+                borderColor: '#ccc',
+                backgroundColor: '#FAF7F6',
+              }}
+              itemStyle={{
+                //single dropdown item style
+                padding: 10,
+
+                marginTop: 2,
+                backgroundColor: '#FAF9F8',
+                borderColor: '#bbb',
+                borderWidth: 1,
+              }}
+              itemTextStyle={{
+                //text style of a single dropdown item
+                color: '#222',
+              }}
+              itemsContainerStyle={{
+                //items container style you can pass maxHeight
+                //to restrict the items dropdown hieght
+                maxHeight: '90%',
+              }}
+              items={misEquipos}
+              //mapping of item array
+              defaultIndex={0}
+              //default selected item index
+              placeholder="Búsqueda"
+              //place holder for the search input
+              resetValue={false}
+              //reset textInput Value with true and false state
+              underlineColorAndroid="transparent"
+            //To remove the underline from the android input
+            />
+
+          </View>
+          <View style={{ marginTop: 20, marginBottom: 10 }}>
+            <Text style={{ textAlign: 'left', borderTopWidth: 1, paddingTop: 5, fontWeight: 'bold' }}>Nombre del Equipo</Text>
+            <Text style={{ textAlign: 'left', marginLeft: 5, marginTop: 5 }}>{inputBuscarEquipos?.name}</Text>
+          </View>
+          <Button style={{ backgroundColor: '#062D73', borderRadius: 5 }}
+            onPress={() => {
+              setModalBuscarEquipos(false)
+              setMiValorModalEquipos(inputBuscarEquipos?.name)
+              formData.equipment_id = inputBuscarEquipos?.id
+            }}
+            accessoryRight={<Icon as={Ionicons} size={18} name='search' color={'white'} />}>
+            Registrar campo
+          </Button>
+        </Card>
+      </Modal>
     </>
   )
 }
