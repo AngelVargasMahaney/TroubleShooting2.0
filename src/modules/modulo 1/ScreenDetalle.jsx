@@ -144,6 +144,39 @@ const ScreenDetalle = (props) => {
     })
   }
 
+  // DATEPICKER CONSTS
+  const [dateS, setDateS] = useState(new Date());
+
+  const [mode, setMode] = useState('date');
+  const [apretoBotonFecha, setApretoBotonFecha] = useState(false);
+  const [apretoBotonTime, setApretoBotonTime] = useState(false);
+  const [showD, setShowD] = useState(false);
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate;
+    console.log(currentDate)
+    
+    setShowD(false);
+    setDateS(currentDate);
+  };
+
+
+  const showMode = (currentMode) => {
+    setShowD(true);
+    setMode(currentMode);
+  };
+
+  const showDatepicker = () => {
+    setApretoBotonFecha(true)
+
+    showMode('date');
+  };
+
+  const showTimepicker = () => {
+    setApretoBotonTime(true)
+
+    showMode('time');
+  };
+
 
   useEffect(() => {
     traerEquipos()
@@ -173,18 +206,26 @@ const ScreenDetalle = (props) => {
                 <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                   <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
                     bold: true
-                  }}>Fecha </FormControl.Label>
-
+                  }}>Fecha {!estadoEdicion ? <Pressable style={{marginLeft:5}} onPress={showDatepicker}><Icon as={Ionicons} size={24} name='calendar-outline' /></Pressable> : null} </FormControl.Label>
+                    {showD && (
+                      <DateTimePicker
+                        testID="dateTimePicker"
+                        value={dateS}
+                        mode={mode}
+                        is24Hour={true}
+                        onChange={onChange}
+                      />
+                    )}
                     <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
-                      <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{fecha}</Text>
+                      <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{apretoBotonFecha ? (dateS.getDate() + '/' + (dateS.getMonth() + 1) + '/' + dateS.getFullYear()) : fecha}</Text>
                     </Skeleton.Text>
 
                   </View>
-                  <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
+                  <View style={{ width: '40%', marginLeft: 5}}><FormControl.Label _text={{
                     bold: true
-                  }}>Hora </FormControl.Label>
+                  }}>Hora{!estadoEdicion ? <Pressable style={{marginLeft:5}} onPress={showTimepicker}><Icon as={Ionicons} size={24} name='time-outline' /></Pressable> : null} </FormControl.Label>
                     <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
-                      <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{hora}</Text>
+                      <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{apretoBotonTime ? (dateS.getHours() + ':' + dateS.getMinutes()) : hora}</Text>
                     </Skeleton.Text>
                   </View>
 
@@ -229,8 +270,8 @@ const ScreenDetalle = (props) => {
                 <FormControl.Label _text={{
                   bold: true
                 }} my={2}>Equipo Afectado
-                
-                {!estadoEdicion ? (<Pressable onPress={() => setModalBuscarEquipos(true)}><Icon as={Ionicons} size={18} name="search-circle-sharp" /></Pressable>) : (null)}
+
+                  {!estadoEdicion ? (<Pressable onPress={() => setModalBuscarEquipos(true)}><Icon as={Ionicons} size={18} name="search-circle-sharp" /></Pressable>) : (null)}
 
                 </FormControl.Label>
                 <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
@@ -378,6 +419,21 @@ const ScreenDetalle = (props) => {
                             <Image
                               source={{ uri: formData?.attachments[0].url }}
                               style={styles.image} />
+                            {
+                              !estadoEdicion ? (
+                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
+                                  <Pressable onPress={() => console.log('img1')} style={{ marginRight: 10 }}>
+                                    <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
+                                  </Pressable>
+                                  {/* <Pressable style={{ marginLeft: 10 }}>
+                                                            <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
+                                                        </Pressable> */}
+                                  <Pressable onPress={() => console.log('img1Setvisible')} style={{ marginLeft: 10 }} >
+                                    <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
+                                  </Pressable>
+                                </View>
+                              ) : (null)
+                            }
                           </Skeleton>
                           {/* <View style={{ flexDirection: 'row' }}>
                           <Pressable style={{ marginRight: 10 }}>
@@ -414,6 +470,21 @@ const ScreenDetalle = (props) => {
                             <Image
                               source={{ uri: formData?.attachments[1].url }}
                               style={styles.image} />
+                            {
+                              !estadoEdicion ? (
+                                <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
+                                  <Pressable onPress={() => console.log('img2')} style={{ marginRight: 10 }}>
+                                    <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
+                                  </Pressable>
+                                  {/* <Pressable style={{ marginLeft: 10 }}>
+                                                            <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
+                                                        </Pressable> */}
+                                  <Pressable onPress={() => console.log('img2Setvisible')} style={{ marginLeft: 10 }} >
+                                    <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
+                                  </Pressable>
+                                </View>
+                              ) : (null)
+                            }
                           </Skeleton>
                           {/* <View style={{ flexDirection: 'row' }}>
                           <Pressable style={{ marginRight: 10 }}>
@@ -430,8 +501,6 @@ const ScreenDetalle = (props) => {
                 </View>
               </FormControl>
             </VStack>
-
-
 
 
 
@@ -496,6 +565,7 @@ const ScreenDetalle = (props) => {
               resizeMode: 'cover',
 
             }} />
+
         </View>
       </View>
 

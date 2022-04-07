@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, useWindowDimensions, Image, Dimensions } from '
 import React, { useState, useEffect } from 'react'
 import TemplateScreen from '../../Template/TemplateScreen'
 import { ProgressSteps, ProgressStep } from 'react-native-progress-steps';
-import { FormControl, Input, VStack, Pressable, Icon, TextArea, FlatList, HStack, ScrollView, InputGroup, InputLeftAddon, InputRightAddon } from 'native-base';
+import { FormControl, Input, VStack, Pressable, Icon, TextArea, FlatList, HStack, ScrollView, InputGroup, InputLeftAddon, InputRightAddon, useToast } from 'native-base';
 import TemplateScreenNoHeader from '../../Template/TemplateScreenNoHeader';
 import { Ionicons } from '@expo/vector-icons';
 import { getEquiment, getSuperIntendent } from '../services/misServicios';
@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import imgDefault from '../../../assets/logos/Logo_Antapaccay.png'
 
 const AddReporte = () => {
-
+    const toast = useToast();
     const [dateS, setDateS] = useState(new Date());
 
     const [miObjeto, setMiObjeto] = useState({
@@ -92,7 +92,142 @@ const AddReporte = () => {
     const showTimepicker = () => {
         showMode('time');
     };
-    
+    const [comproboCampo, setComproboCampo] = useState(true)
+    var array = new Array()
+
+
+    const comprobarCambos = () => {
+        var aux = 0
+        if (miObjeto.event == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.date == "") {
+            setComproboCampo(false)
+            aux = 0
+        } else if (miObjeto.description == "") {
+            setComproboCampo(false)
+            aux = 0
+        } else if (miObjeto.attributed_cause == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.superintendent == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.supervisor == "") {
+            setComproboCampo(false)
+            aux = 0
+
+
+        } else if (miObjeto.operators == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.downtime == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.details == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.take_actions == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.results == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.equipment_id == "") {
+            setComproboCampo(false)
+            aux = 0
+
+        } else if (miObjeto.attachments == null) {
+            setComproboCampo(false)
+            aux = 0
+
+        } else {
+            setComproboCampo(true)
+            aux = 1
+        }
+
+
+
+    }
+
+    const comprobarVacio = () => {
+        let cont = 0;
+        if (miObjeto.superintendent == '') {
+            array.push("- Superintendente")
+        } else {
+            array.splice(1, 1)
+        }
+        if (miObjeto.supervisor == '') {
+            array.push("- Supervisor")
+        } else {
+            array.splice(2, 1)
+        }
+        if (miObjeto.operators == '') {
+            array.push("- Operarios")
+        } else {
+            array.splice(3, 1)
+        }
+        if (miObjeto.equipment_id == '') {
+            array.push("- Equipo Afectado")
+        } else {
+            array.splice(4, 1)
+        }
+        if (miObjeto.downtime == '') {
+            array.push("- Tiempo de Parada")
+        } else {
+            array.splice(5, 1)
+        }
+        if (miObjeto.details == '') {
+            array.push("- Detalle de parada")
+        } else {
+            array.splice(6, 1)
+        }
+        if (miObjeto.event == '') {
+            array.push("- Evento Ocurrido")
+        } else {
+            array.splice(7, 1)
+        }
+        if (miObjeto.description == '') {
+            array.push("- Descripción del Evento")
+        } else {
+            array.splice(8, 1)
+        }
+        if (miObjeto.attributed_cause == '') {
+            array.push("- Causa del Evento")
+        } else {
+            array.splice(9, 1)
+        }
+        if (miObjeto.take_actions == '') {
+            array.push("- Acciones Realizadas")
+        } else {
+            array.splice(10, 1)
+        }
+        if (miObjeto.results == '') {
+            array.push("- Resultados")
+        } else {
+            array.splice(11, 1)
+        }
+
+        console.log(array)
+        toast.show({
+            title: "Completar campos",
+            status: "danger",
+            description: "Todos los campos son requeridos, ha usted le falta llenar: " + "\n" + array.join("\n")
+        })
+    }
+
+    useEffect(() => {
+        comprobarCambos()
+    })
+
 
 
     const [pickedImagePath, setPickedImagePath] = useState('');
@@ -235,7 +370,7 @@ const AddReporte = () => {
                                                 }}>Superintendente <Pressable onPress={() => setModalBuscarSuperIntendente(true)}><Icon as={Ionicons} size={6} name="search-circle-sharp" /></Pressable> </FormControl.Label>
 
 
-                                                <Input defaultValue={miObjeto.superintendent} placeholder="Juan Ramírez Choque" onChangeText={value => setMiObjeto({
+                                                <Input variant="rounded" defaultValue={miObjeto.superintendent} placeholder="Juan Ramírez Choque" onChangeText={value => setMiObjeto({
                                                     ...miObjeto,
                                                     superintendent: value
                                                 })} />
@@ -397,14 +532,15 @@ const AddReporte = () => {
                                 </ScrollView>
                             </ProgressStep>
                             <ProgressStep
-                                finishBtnText="Enviar"
+                                finishBtnText={!comproboCampo ? "Completar" : "Enviar"}
+
                                 nextBtnText='Siguiente'
                                 previousBtnText='Anterior'
-                                nextBtnTextStyle={{ color: '#FFFFFF', margin: 5 }}
-                                nextBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginRight: -30 }}
+                                nextBtnTextStyle={{ color: !comproboCampo ? '#1E1918' : '#FFFFFF', margin: 5 }}
+                                nextBtnStyle={{ backgroundColor: !comproboCampo ? '#F75A39' : '#01286B', borderRadius: 7, marginRight: -30 }}
                                 previousBtnTextStyle={{ color: '#FFFFFF', margin: 5 }}
                                 previousBtnStyle={{ backgroundColor: '#01286B', borderRadius: 7, marginLeft: -30 }}
-                                onSubmit={() => navigation.navigate('Resumen', { miObjeto }, setBotonH)}
+                                onSubmit={() => !comproboCampo ? comprobarVacio() : navigation.navigate('Resumen', { miObjeto }, setBotonH)}
                             >
                                 <View style={[{ marginBottom: 35 }, styles.shadows]}>
                                     <View style={{ borderBottomWidth: 1, borderColor: '#ED8512', width: '100%', marginBottom: 20 }}>
@@ -547,7 +683,7 @@ const AddReporte = () => {
                         </Pressable>
                     </View>
 
-                    <View style={{ justifyContent: 'center', alignItems: 'center',maxHeight:(useWindowDimensions().height) - 350 }}>
+                    <View style={{ justifyContent: 'center', alignItems: 'center', maxHeight: (useWindowDimensions().height) - 350 }}>
 
                         <SearchableDropDown
 
@@ -616,7 +752,7 @@ const AddReporte = () => {
                 visible={modalBuscarEquipos}
                 backdropStyle={styles.backdrop}
                 onBackdropPress={() => setModalBuscarEquipos(false)}>
-                <Card disabled={true} style={{ width: (useWindowDimensions().width) - 50}}>
+                <Card disabled={true} style={{ width: (useWindowDimensions().width) - 50 }}>
                     <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', marginVertical: 20, paddingBottom: 7, borderBottomWidth: 1 }}>
                         <Text style={{ textAlign: 'left' }}>Búsqueda Rápida</Text>
                         <Pressable style={{ backgroundColor: '#FC441C', borderRadius: 5, padding: 3 }} onPress={() => setModalBuscarEquipos(false)}>
@@ -624,7 +760,7 @@ const AddReporte = () => {
                         </Pressable>
                     </View>
 
-                    <View style={{ justifyContent:"center",alignItems: 'center' ,  maxHeight:(useWindowDimensions().height) - 400, marginTop: -15, marginBottom: -15}}>
+                    <View style={{ justifyContent: "center", alignItems: 'center', maxHeight: (useWindowDimensions().height) - 400, marginTop: -15, marginBottom: -15 }}>
 
                         <SearchableDropDown
 
