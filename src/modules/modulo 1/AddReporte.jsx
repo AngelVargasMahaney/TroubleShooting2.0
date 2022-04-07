@@ -220,7 +220,7 @@ const AddReporte = () => {
         toast.show({
             title: "Completar campos",
             status: "danger",
-            description: "Todos los campos son requeridos, ha usted le falta llenar: " + "\n" + array.join("\n")
+            description: "Todos los campos son requeridos, a usted le falta llenar: " + "\n" + array.join("\n")
         })
     }
 
