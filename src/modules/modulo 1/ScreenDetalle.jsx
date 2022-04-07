@@ -237,7 +237,8 @@ const ScreenDetalle = (props) => {
                 </FormControl.Label>
                 <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
 
-                  <Input defaultValue={estadoEdicion ?miEquipo: miValorModalEquipos } placeholder=""
+                  {/* <Input defaultValue={estadoEdicion ?miEquipo: miValorModalEquipos } placeholder="" */}
+                  <Input defaultValue={miEquipo } placeholder=""
                     // isDisabled={estadoEdicion}
                     isDisabled={true}
                   //Aqui falta un modal para cambiar de equipo.
@@ -590,6 +591,7 @@ const ScreenDetalle = (props) => {
             onPress={() => {
               setModalBuscarEquipos(false)
               setMiValorModalEquipos(inputBuscarEquipos?.name)
+              setMiEquipo(inputBuscarEquipos?.name)
               formData.equipment_id = inputBuscarEquipos?.id
             }}
             accessoryRight={<Icon as={Ionicons} size={18} name='search' color={'white'} />}>
