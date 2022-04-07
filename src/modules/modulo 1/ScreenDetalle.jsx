@@ -33,7 +33,7 @@ const ScreenDetalle = (props) => {
   useEffect(() => {
     setTimeout(() => {
       setSkeletonLoader(true);
-    }, 2800);
+    }, 2500);
   })
 
 
@@ -51,8 +51,7 @@ const ScreenDetalle = (props) => {
 
 
 
-  console.log('mi data')
-  console.log(formData)
+ 
   //GUARDAR CAMBIOS
   const handleSubmit = () => {
 
@@ -76,8 +75,11 @@ const ScreenDetalle = (props) => {
 
       }
     }).catch(err => {
-      console.log("ERROR EN EL SERVICIO CREARDATA")
-      console.warn(err)
+      toast.show({
+        title: "Error",
+        status: "error",
+        description: "Ocurrió un error intente nuevamente"
+      })
     })
   }
 
@@ -244,7 +246,7 @@ const ScreenDetalle = (props) => {
                   bold: true
                 }}>Superintendente</FormControl.Label>
                 <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
-                  <Input defaultValue={formData?.superintendent} placeholder="John"
+                  <Input defaultValue={formData?.superintendent} placeholder=""
                     isDisabled={estadoEdicion}
                     onChangeText={(value) => handleChangeText('superintendent', value)} />
                 </Skeleton.Text>
@@ -253,7 +255,7 @@ const ScreenDetalle = (props) => {
                   bold: true
                 }}>Supervisor</FormControl.Label>
                 <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
-                  <Input defaultValue={formData?.supervisor} placeholder="John"
+                  <Input defaultValue={formData?.supervisor} placeholder=""
                     isDisabled={estadoEdicion}
                     onChangeText={(value) => handleChangeText('supervisor', value)} />
                 </Skeleton.Text>
@@ -262,7 +264,7 @@ const ScreenDetalle = (props) => {
                 }}>Operarios</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <Input defaultValue={formData?.operators} placeholder="John"
+                  <Input defaultValue={formData?.operators} placeholder=""
                     isDisabled={estadoEdicion}
                     onChangeText={(value) => handleChangeText('operators', value)} />
                 </Skeleton.Text>
@@ -276,7 +278,8 @@ const ScreenDetalle = (props) => {
                 </FormControl.Label>
                 <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
 
-                  <Input defaultValue={!estadoEdicion ? miValorModalEquipos : miEquipo} placeholder="John"
+                  {/* <Input defaultValue={estadoEdicion ?miEquipo: miValorModalEquipos } placeholder="" */}
+                  <Input defaultValue={miEquipo } placeholder=""
                     // isDisabled={estadoEdicion}
                     isDisabled={true}
                   //Aqui falta un modal para cambiar de equipo.
@@ -330,7 +333,7 @@ const ScreenDetalle = (props) => {
                 }}>Evento Ocurrido</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <Input defaultValue={formData?.event} placeholder="John"
+                  <Input defaultValue={formData?.event} placeholder=""
                     isDisabled={estadoEdicion}
                     onChangeText={(value) => handleChangeText('event', value)} />
                 </Skeleton.Text>
@@ -354,7 +357,7 @@ const ScreenDetalle = (props) => {
                 }}>Causas</FormControl.Label>
                 <Skeleton.Text px="4" isLoaded={skeletonLoader}>
 
-                  <TextArea defaultValue={formData?.attributed_cause} placeholder="John"
+                  <TextArea defaultValue={formData?.attributed_cause} placeholder=""
                     isDisabled={estadoEdicion}
                     onChangeText={(value) => handleChangeText('attributed_cause', value)} />
                 </Skeleton.Text>
@@ -510,22 +513,34 @@ const ScreenDetalle = (props) => {
 
       </View>
       <ActionButton buttonColor="#01286B">
+        <ActionButton.Item buttonColor='#fc6464' title="Salir" onPress={() =>
+          {toast.show({
+            status: "error", title: "Se canceló la operación"
+          }),
+        navigation.goBack()}
+        }
+
+        >
+          <Icon name="md-close-circle" style={styles.actionButtonIcon} />
+        </ActionButton.Item>
 
         {
-          estadoEdicion ? <ActionButton.Item buttonColor='#3498db' title="Editar Registro"
-            onPress={() => {
-              setEstadoEdicion(false);
-              toast.show({
-                status: "info",
-                title: "Modo Edición"
-              })
-            }} _dark={{
-              bg: "coolGray.800"
-            }} _light={{
-              bg: "white"
-            }}>
-            <Icon name="md-pencil" style={styles.actionButtonIcon} />
-          </ActionButton.Item> :
+          estadoEdicion ?
+            <ActionButton.Item buttonColor='#3498db' title="Editar Registro"
+              onPress={() => {
+                setEstadoEdicion(false);
+                toast.show({
+                  status: "info",
+                  title: "Modo Edición"
+                })
+              }} _dark={{
+                bg: "coolGray.800"
+              }} _light={{
+                bg: "white"
+              }}>
+              <Icon name="md-pencil" style={styles.actionButtonIcon} />
+            </ActionButton.Item>
+            :
             <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() => toast.show({
               status: "warning", title: "Ya estas en modo Edición"
             })} _dark={{
@@ -539,15 +554,8 @@ const ScreenDetalle = (props) => {
 
         {
           estadoEdicion ?
-            <ActionButton.Item buttonColor='#1abc9c' title="Elige editar primero" onPress={() => toast.show({
-              status: "warning", title: "Primero entra en el modo Edición"
-            })} _dark={{
-              bg: "coolGray.800"
-            }} _light={{
-              bg: "white"
-            }}>
-              <Icon name="md-save" style={styles.actionButtonIcon} />
-            </ActionButton.Item> :
+            (<></>)
+            :
             <ActionButton.Item buttonColor='#1abc9c' title="Guardar Cambios" onPress={() => { handleSubmit() }}>
               <Icon name="md-save" style={styles.actionButtonIcon} />
             </ActionButton.Item>
@@ -653,6 +661,7 @@ const ScreenDetalle = (props) => {
             onPress={() => {
               setModalBuscarEquipos(false)
               setMiValorModalEquipos(inputBuscarEquipos?.name)
+              setMiEquipo(inputBuscarEquipos?.name)
               formData.equipment_id = inputBuscarEquipos?.id
             }}
             accessoryRight={<Icon as={Ionicons} size={18} name='search' color={'white'} />}>
