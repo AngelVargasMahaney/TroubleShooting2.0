@@ -220,7 +220,7 @@ const AddReporte = () => {
         toast.show({
             title: "Completar campos",
             status: "danger",
-            description: "Todos los campos son requeridos, a usted le falta llenar: " + "\n" + array.join("\n")
+            description: "Los siguientes campos deben ser completados: " + "\n" + array.join("\n")
         })
     }
 
@@ -298,10 +298,22 @@ const AddReporte = () => {
         }
     }
     const [isImageViewVisible, setisImageViewVisible] = useState(false);
+    const [isImageViewVisible2, setisImageViewVisible2] = useState(false);
+    const [miOpcionImagen, setMiOpcionImagen] = useState(0);
     const images = [
         {
             source: {
-                uri: pickedImagePath,
+                uri: pickedImagePath
+            },
+            title: 'Evidencias',
+            width: 806,
+            height: 720,
+        },
+    ];
+    const images2 = [
+        {
+            source: {
+                uri: pickedImagePath2
             },
             title: 'Evidencias',
             width: 806,
@@ -633,7 +645,7 @@ const AddReporte = () => {
                                                         {/* <Pressable style={{ marginLeft: 10 }}>
                                                             <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable> */}
-                                                        <Pressable onPress={() => setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
+                                                        <Pressable onPress={() => setisImageViewVisible2(true)} style={{ marginLeft: 10 }} >
                                                             <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable>
                                                     </View>
@@ -833,6 +845,15 @@ const AddReporte = () => {
                 imageIndex={0}
                 isPinchZoomEnabled={true}
                 isVisible={isImageViewVisible}
+
+            />
+            <ImageView
+                isSwipeCloseEnabled={true}
+                onClose={() => setisImageViewVisible2(false)}
+                images={images2}
+                imageIndex={0}
+                isPinchZoomEnabled={true}
+                isVisible={isImageViewVisible2}
 
             />
         </>

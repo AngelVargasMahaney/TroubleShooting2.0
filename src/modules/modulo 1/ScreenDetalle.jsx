@@ -10,9 +10,8 @@ import SearchableDropDown from 'react-native-searchable-dropdown';
 import { Card, Modal, Button } from '@ui-kitten/components';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import * as ImagePicker from 'expo-image-picker';
-import ImageView from 'react-native-image-view';
 import { useNavigation } from '@react-navigation/native';
-
+import ImageView from 'react-native-image-view';
 //import { FAB, Portal, Provider } from 'react-native-paper';
 import ActionButton from 'react-native-action-button';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -51,10 +50,11 @@ const ScreenDetalle = (props) => {
 
 
 
- 
+
   //GUARDAR CAMBIOS
   const handleSubmit = () => {
-
+    console.log("ESTE ES MI FORMDATA")
+    console.log(formData)
     putTroubleshootingUpdate(formData, props.route.params.id).then((rpta) => {
 
       if (rpta.status === 200) {
@@ -139,6 +139,9 @@ const ScreenDetalle = (props) => {
 
   const [misEquipos, setMisEquipos] = useState([])
   const [miValorModalEquipos, setMiValorModalEquipos] = useState('')
+  const [isImageViewVisible, setisImageViewVisible] = useState(false);
+  const [isImageViewVisible2, setisImageViewVisible2] = useState(false);
+
   const traerEquipos = () => {
 
     getEquiment().then(rpta => {
@@ -156,9 +159,10 @@ const ScreenDetalle = (props) => {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     console.log(currentDate)
-    
+
     setShowD(false);
     setDateS(currentDate);
+    formData.date = currentDate
   };
 
 
@@ -183,6 +187,100 @@ const ScreenDetalle = (props) => {
   useEffect(() => {
     traerEquipos()
   }, [])
+  const [pickedImagePath, setPickedImagePath] = useState('');
+  const [img1BotonApretado, setImg1BotonApretado] = useState(false)
+  const [dataFoto, setDataFoto] = useState(
+
+    {
+      model_type: 2,
+      attachmentable_type: "App\\Models\\equipos\\Troubleshooting",
+      attachmentable_id: 1,
+      base64: ""
+    }
+
+  )
+  const showImagePicker = async () => {
+    // Apreguntar por los permisos
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Te has negado a permitir que esta aplicación acceda a tus fotos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: false,
+      base64: true,
+    });
+    if (!result.cancelled) {
+      setPickedImagePath(result.uri);
+      setImg1BotonApretado(true)
+      const source = { uri: 'data:image/jpeg;base64,' + result.base64 };
+      
+      // console.warn(source.uri);
+      dataFoto.base64 = source.uri
+      formData.attachments[0]= dataFoto
+    }
+  }
+  console.log("MI DATA DE LA FOTO")
+  console.log(formData?.attachments[0])
+  const images = [
+    {
+      source: {
+        uri: pickedImagePath,
+      },
+      title: 'Evidencias',
+      width: 806,
+      height: 720,
+    },
+  ];
+
+  const [pickedImagePath2, setPickedImagePath2] = useState('');
+  const [img1BotonApretado2, setImg1BotonApretado2] = useState(false)
+  const [dataFoto2, setDataFoto2] = useState(
+
+    {
+      model_type: 2,
+      attachmentable_type: "App\\Models\\equipos\\Troubleshooting",
+      attachmentable_id: 2,
+      base64: ""
+    }
+
+  )
+  const showImagePicker2 = async () => {
+    // Apreguntar por los permisos
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+    if (permissionResult.granted === false) {
+      alert("Te has negado a permitir que esta aplicación acceda a tus fotos!");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      allowsEditing: false,
+      base64: true,
+    });
+    if (!result.cancelled) {
+      setPickedImagePath2(result.uri);
+      setImg1BotonApretado2(true)
+      const source = { uri: 'data:image/jpeg;base64,' + result.base64 };
+      // console.warn(source.uri);
+      dataFoto2.base64 = source.uri
+      //formData.attachments[1] = dataFoto2
+    }
+
+  }
+  const images2 = [
+    {
+      source: {
+        uri: pickedImagePath2,
+      },
+      title: 'Evidencias',
+      width: 806,
+      height: 720,
+    },
+  ];
+
   return (
 
     <>
@@ -208,7 +306,7 @@ const ScreenDetalle = (props) => {
                 <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                   <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
                     bold: true
-                  }}>Fecha {!estadoEdicion ? <Pressable style={{marginLeft:5}} onPress={showDatepicker}><Icon as={Ionicons} size={24} name='calendar-outline' /></Pressable> : null} </FormControl.Label>
+                  }}>Fecha {!estadoEdicion ? <Pressable style={{ marginLeft: 5 }} onPress={showDatepicker}><Icon as={Ionicons} size={24} name='calendar-outline' /></Pressable> : null} </FormControl.Label>
                     {showD && (
                       <DateTimePicker
                         testID="dateTimePicker"
@@ -223,9 +321,9 @@ const ScreenDetalle = (props) => {
                     </Skeleton.Text>
 
                   </View>
-                  <View style={{ width: '40%', marginLeft: 5}}><FormControl.Label _text={{
+                  <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
                     bold: true
-                  }}>Hora{!estadoEdicion ? <Pressable style={{marginLeft:5}} onPress={showTimepicker}><Icon as={Ionicons} size={24} name='time-outline' /></Pressable> : null} </FormControl.Label>
+                  }}>Hora{!estadoEdicion ? <Pressable style={{ marginLeft: 5 }} onPress={showTimepicker}><Icon as={Ionicons} size={24} name='time-outline' /></Pressable> : null} </FormControl.Label>
                     <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
                       <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{apretoBotonTime ? (dateS.getHours() + ':' + dateS.getMinutes()) : hora}</Text>
                     </Skeleton.Text>
@@ -279,7 +377,7 @@ const ScreenDetalle = (props) => {
                 <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
 
                   {/* <Input defaultValue={estadoEdicion ?miEquipo: miValorModalEquipos } placeholder="" */}
-                  <Input defaultValue={miEquipo } placeholder=""
+                  <Input defaultValue={miEquipo} placeholder=""
                     // isDisabled={estadoEdicion}
                     isDisabled={true}
                   //Aqui falta un modal para cambiar de equipo.
@@ -420,18 +518,18 @@ const ScreenDetalle = (props) => {
                         }}>
                           <Skeleton h="100%" isLoaded={skeletonLoader}>
                             <Image
-                              source={{ uri: formData?.attachments[0].url }}
+                              source={{ uri: img1BotonApretado ? pickedImagePath : formData?.attachments[0].url }}
                               style={styles.image} />
                             {
                               !estadoEdicion ? (
                                 <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
-                                  <Pressable onPress={() => console.log('img1')} style={{ marginRight: 10 }}>
+                                  <Pressable onPress={showImagePicker} style={{ marginRight: 10 }}>
                                     <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
                                   </Pressable>
                                   {/* <Pressable style={{ marginLeft: 10 }}>
                                                             <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable> */}
-                                  <Pressable onPress={() => console.log('img1Setvisible')} style={{ marginLeft: 10 }} >
+                                  <Pressable onPress={() => setisImageViewVisible(true)} style={{ marginLeft: 10 }} >
                                     <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
                                   </Pressable>
                                 </View>
@@ -471,18 +569,18 @@ const ScreenDetalle = (props) => {
                         }}>
                           <Skeleton h="100%" isLoaded={skeletonLoader}>
                             <Image
-                              source={{ uri: formData?.attachments[1].url }}
+                              source={{ uri: img1BotonApretado2 ? pickedImagePath2 : formData?.attachments[1].url }}
                               style={styles.image} />
                             {
                               !estadoEdicion ? (
                                 <View style={{ flexDirection: 'row', backgroundColor: 'rgba(0,0,0,0.5)', width: '90%', justifyContent: 'center', borderRadius: 7 }}>
-                                  <Pressable onPress={() => console.log('img2')} style={{ marginRight: 10 }}>
+                                  <Pressable onPress={showImagePicker2} style={{ marginRight: 10 }}>
                                     <Icon as={Ionicons} size={35} name="image-outline" color={'rgba(0255,255,255,0.8)'} />
                                   </Pressable>
                                   {/* <Pressable style={{ marginLeft: 10 }}>
                                                             <Icon as={Ionicons} size={35} name="camera-outline" color={'rgba(0255,255,255,0.8)'} />
                                                         </Pressable> */}
-                                  <Pressable onPress={() => console.log('img2Setvisible')} style={{ marginLeft: 10 }} >
+                                  <Pressable onPress={() => setisImageViewVisible2(true)} style={{ marginLeft: 10 }} >
                                     <Icon as={Ionicons} size={35} name="scan" color={'rgba(0255,255,255,0.8)'} />
                                   </Pressable>
                                 </View>
@@ -513,11 +611,12 @@ const ScreenDetalle = (props) => {
 
       </View>
       <ActionButton buttonColor="#01286B">
-        <ActionButton.Item buttonColor='#fc6464' title="Salir" onPress={() =>
-          {toast.show({
+        <ActionButton.Item buttonColor='#fc6464' title="Salir" onPress={() => {
+          toast.show({
             status: "error", title: "Se canceló la operación"
           }),
-        navigation.goBack()}
+            navigation.goBack()
+        }
         }
 
         >
@@ -669,6 +768,24 @@ const ScreenDetalle = (props) => {
           </Button>
         </Card>
       </Modal>
+      <ImageView
+        isSwipeCloseEnabled={true}
+        onClose={() => setisImageViewVisible(false)}
+        images={images}
+        imageIndex={0}
+        isPinchZoomEnabled={true}
+        isVisible={isImageViewVisible}
+
+      />
+      <ImageView
+        isSwipeCloseEnabled={true}
+        onClose={() => setisImageViewVisible2(false)}
+        images={images2}
+        imageIndex={0}
+        isPinchZoomEnabled={true}
+        isVisible={isImageViewVisible2}
+
+      />
     </>
   )
 }
