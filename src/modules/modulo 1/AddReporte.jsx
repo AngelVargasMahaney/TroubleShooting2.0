@@ -16,7 +16,7 @@ import imgDefault from '../../../assets/logos/Logo_Antapaccay.png'
 
 const AddReporte = () => {
     const toast = useToast();
-    const [dateS, setDateS] = useState(new Date());
+    const [dateS, setDateS] = useState();
 
     const [miObjeto, setMiObjeto] = useState({
         event: '',
@@ -348,15 +348,7 @@ const AddReporte = () => {
                                                     <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
                                                         bold: true
                                                     }}>Fecha <Pressable onPress={showDatepicker}><Icon as={Ionicons} size={6} name='calendar-outline' /></Pressable></FormControl.Label>
-                                                        {show && (
-                                                            <DateTimePicker
-                                                                testID="dateTimePicker"
-                                                                value={dateS}
-                                                                mode={mode}
-                                                                is24Hour={true}
-                                                                onChange={onChange}
-                                                            />
-                                                        )}
+
                                                         <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{dateS.getDate() + '/' + (dateS.getMonth() + 1) + '/' + dateS.getFullYear()}</Text>
 
                                                     </View>
@@ -369,7 +361,15 @@ const AddReporte = () => {
 
                                                 </View>
 
-
+                                                {show && (
+                                                    <DateTimePicker
+                                                        testID="dateTimePicker"
+                                                        value={dateS}
+                                                        mode={mode}
+                                                        is24Hour={true}
+                                                        onChange={onChange}
+                                                    />
+                                                )}
                                                 <FormControl.ErrorMessage _text={{
                                                     fontSize: 'xs'
                                                 }}>

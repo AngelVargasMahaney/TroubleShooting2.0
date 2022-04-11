@@ -94,6 +94,7 @@ const TemplateScreen = (props) => {
 
                     flexDirection: "column",
                     opacity: fadeAnim,         // Bind opacity to animated value
+                    useNativeDriver: true
                 }}
             >
                 <TopNavigation
