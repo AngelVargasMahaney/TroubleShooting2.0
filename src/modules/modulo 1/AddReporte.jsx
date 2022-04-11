@@ -16,7 +16,7 @@ import imgDefault from '../../../assets/logos/Logo_Antapaccay.png'
 
 const AddReporte = () => {
     const toast = useToast();
-    const [dateS, setDateS] = useState();
+    const [dateS, setDateS] = useState(new Date())
 
     const [miObjeto, setMiObjeto] = useState({
         event: '',

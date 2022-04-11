@@ -249,7 +249,7 @@ const ScreenDetalle = (props) => {
   }
 
   // DATEPICKER CONSTS
-  const [dateS, setDateS] = useState(new Date());
+  const [dateS, setDateS] = useState();
 
   const [apretoBotonFecha, setApretoBotonFecha] = useState(false);
   const [apretoBotonTime, setApretoBotonTime] = useState(false);
