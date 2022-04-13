@@ -314,7 +314,10 @@ const ScreenDetalle = (props) => {
                 <View style={{ flexDirection: 'row', marginBottom: 10 }}>
                   <View style={{ width: '55%', marginRight: 5 }}><FormControl.Label _text={{
                     bold: true
-                  }}>Fecha {!estadoEdicion ? <Pressable style={{ marginLeft: 5 }} onPress={showDatepicker}><Icon as={Ionicons} size={24} name='calendar-outline' /></Pressable> : null} </FormControl.Label>
+                  }}>Fecha
+                   {/* {!estadoEdicion ? <Pressable style={{ marginLeft: 5 }} onPress={showDatepicker}>
+                     <Icon as={Ionicons} size={24} name='calendar-outline' /></Pressable> : null} */}
+                      </FormControl.Label>
 
                     <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
                       <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{apretoBotonFecha ? (dateS.getDate() + '/' + (dateS.getMonth() + 1) + '/' + dateS.getFullYear()) : fecha}</Text>
@@ -323,7 +326,10 @@ const ScreenDetalle = (props) => {
                   </View>
                   <View style={{ width: '40%', marginLeft: 5 }}><FormControl.Label _text={{
                     bold: true
-                  }}>Hora{!estadoEdicion ? <Pressable style={{ marginLeft: 5 }} onPress={showTimepicker}><Icon as={Ionicons} size={24} name='time-outline' /></Pressable> : null} </FormControl.Label>
+                  }}>Hora
+                  {/* {!estadoEdicion ? <Pressable style={{ marginLeft: 5 }} onPress={showTimepicker}>
+                    <Icon as={Ionicons} size={24} name='time-outline' /></Pressable> : null}  */}
+                    </FormControl.Label>
                     <Skeleton.Text px="4" lines={2} isLoaded={skeletonLoader}>
                       <Text style={{ backgroundColor: 'rgba(229, 227, 227, 0.9)', textAlign: 'center', borderRadius: 5, padding: 10 }}>{apretoBotonTime ? (dateS.getHours() + ':' + dateS.getMinutes()) : hora}</Text>
                     </Skeleton.Text>
@@ -668,16 +674,16 @@ const ScreenDetalle = (props) => {
                 }}>
                 <Icon name="md-pencil" style={styles.actionButtonIcon} />
               </ActionButton.Item>
-              :
-              <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() => toast.show({
-                status: "warning", title: "Ya estas en modo Edición"
-              })} _dark={{
-                bg: "coolGray.800"
-              }} _light={{
-                bg: "white"
-              }}>
-                <Icon name="md-pencil" style={styles.actionButtonIcon} />
-              </ActionButton.Item>
+              :<></>
+              // <ActionButton.Item buttonColor='#3498db' title="Editando" onPress={() => toast.show({
+              //   status: "warning", title: "Ya estas en modo Edición"
+              // })} _dark={{
+              //   bg: "coolGray.800"
+              // }} _light={{
+              //   bg: "white"
+              // }}>
+              //   <Icon name="md-pencil" style={styles.actionButtonIcon} />
+              // </ActionButton.Item>
           }
 
           {
